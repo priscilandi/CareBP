@@ -1,42 +1,44 @@
-
-PRAGMA foreign_keys = ON;
-
 CREATE TABLE location_types (
-    type_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type_name TEXT NOT NULL UNIQUE,
+    type_id INT AUTO_INCREMENT PRIMARY KEY,
+    type_name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT
 );
 
 CREATE TABLE healthcare_locations (
-    location_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type_id INTEGER NOT NULL,
+    location_id INT AUTO_INCREMENT PRIMARY KEY,
+    type_id INT NOT NULL,
     name TEXT NOT NULL,
     address TEXT NOT NULL,
     city TEXT NOT NULL,
     state TEXT NOT NULL,
-    zip_code TEXT NOT NULL,
+    zip_code VARCHAR(10) NOT NULL,
     phone TEXT,
     hours TEXT,
     latitude REAL,
     longitude REAL,
-    offers_bp_screening INTEGER NOT NULL DEFAULT 0,
+    offers_bp_screening BOOLEAN NOT NULL DEFAULT FALSE,
     website TEXT,
-    is_active INTEGER NOT NULL DEFAULT 1,
-    last_verified TEXT,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    last_verified DATETIME,
     FOREIGN KEY (type_id) REFERENCES location_types(type_id)
 );
 
+CREATE INDEX idx_healthcare_locations_zip
+ON healthcare_locations(zip_code);
+
 CREATE TABLE bp_categories (
-    category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    category_name TEXT NOT NULL UNIQUE,
-    display_order INTEGER NOT NULL
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL UNIQUE,
+    display_order INT NOT NULL
 );
 
 CREATE TABLE recommendations (
-    recommendation_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    category_id INTEGER NOT NULL,
+    recommendation_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    type_id INT,
     guidance_text TEXT NOT NULL,
     care_level TEXT NOT NULL,
-    approved INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY (category_id) REFERENCES bp_categories(category_id)
+    approved BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (category_id) REFERENCES bp_categories(category_id),
+    FOREIGN KEY (type_id) REFERENCES location_types(type_id)
 );

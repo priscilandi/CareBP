@@ -3,17 +3,27 @@
 -- Development/testing purposes only
 -- =========================================
 
-PRAGMA foreign_keys = ON;
 
+-- Clear existing development data so this file can be rerun safely.
+DELETE FROM recommendations;
+DELETE FROM healthcare_locations;
+DELETE FROM bp_categories;
+DELETE FROM location_types;
+
+-- Reset AUTO_INCREMENT IDs so seeded foreign-key IDs remain predictable.
+ALTER TABLE recommendations AUTO_INCREMENT = 1;
+ALTER TABLE healthcare_locations AUTO_INCREMENT = 1;
+ALTER TABLE bp_categories AUTO_INCREMENT = 1;
+ALTER TABLE location_types AUTO_INCREMENT = 1;
 
 -- LOCATION TYPES
 
 INSERT INTO location_types (type_name, description)
 VALUES
+('Hospital', 'Hospital or emergency medical facility'),
+('Urgent Care', 'Walk-in urgent care facility'),
 ('Pharmacy', 'Pharmacy offering healthcare services'),
-('Community Clinic', 'Community-based healthcare facility'),
-('Urgent Care', 'Facility providing urgent medical care'),
-('Hospital', 'Hospital providing medical services');
+('Clinic', 'Primary or outpatient healthcare clinic');
 
 
 -- HEALTHCARE LOCATIONS
@@ -23,7 +33,7 @@ INSERT INTO healthcare_locations
  latitude, longitude, offers_bp_screening, website, is_active, last_verified)
 VALUES
 
-(1,
+(3,
  'CareBP Demo Pharmacy',
  '100 Test Street',
  'Augusta',
@@ -38,7 +48,7 @@ VALUES
  1,
  '2026-09-11'),
 
-(2,
+(4,
  'CareBP Community Clinic',
  '200 Example Avenue',
  'Augusta',
@@ -53,7 +63,7 @@ VALUES
  1,
  '2026-09-11'),
 
-(3,
+(2,
  'CareBP Demo Urgent Care',
  '300 Sample Road',
  'Augusta',
@@ -82,9 +92,9 @@ VALUES
 -- RECOMMENDATIONS
 
 INSERT INTO recommendations
-(category_id, guidance_text, care_level, approved)
+(category_id, type_id, guidance_text, care_level, approved)
 VALUES
-(1, 'Demo guidance for normal blood pressure.', 'Routine', 1),
-(2, 'Demo guidance for elevated blood pressure.', 'Routine', 1),
-(3, 'Demo guidance for Stage 1 hypertension.', 'Follow-up', 1),
-(4, 'Demo guidance for Stage 2 hypertension.', 'Higher priority', 1);
+(1, NULL, 'Demo guidance for normal blood pressure.', 'Routine', 1),
+(2, 3, 'Demo guidance for elevated blood pressure.', 'Routine', 1),
+(3, 4, 'Demo guidance for Stage 1 hypertension.', 'Follow-up', 1),
+(4, 2, 'Demo guidance for Stage 2 hypertension.', 'Higher priority', 1);
