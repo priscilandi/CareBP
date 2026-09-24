@@ -177,6 +177,24 @@
                     <h1 id="learn-heading">Learn about blood pressure</h1>
                     <p class="tab-subheading">Short, plain-language answers - tap any topic to read more.</p>
 
+                    <button class="view-btn" type="button" data-topic="managing-bp">
+                        How to manage Blood Pressure?
+                        <span>
+                            You can manage high blood pressure by adopting a heart-healthy diet, cutting back on sodium, and staying physically active.
+                            It is also important to maintain a healthy weight, reduce stress, get enough sleep, and avoid alcohol and tobacco. Monitored 
+                            numbers and taking prescribed medications exactly as directed by your doctor are vital steps. For more details on these lifestyle
+                            changes, visit the <a href="https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure">American Heart Association</a>
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="blood-pressure">
+                        What is high blood pressure?
+                        <span>
+                            High blood pressure, or hypertension, happens when the force of your blood pushing against your artery walls
+                            is consistently to high. It affects nearly half of American adults and is called a "silent killer" because
+                            it rarely shows physical symptoms. For more details on what is High Blood Pressure, visit the 
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure">American Heart Association</a>
+                        </span>
+                    </button>
                     <button class="view-btn" type="button" data-topic="numbers-mean">
                         What do the numbers mean?
                         <span>
@@ -222,13 +240,30 @@
                     </button>
                 </div>
 
+                <div id="topic-managing-bp" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">What is high blood pressure?</h2>
+                    <div class="topic-body" id="load-manage" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+
+                <div id="topic-blood-pressure" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">What is high blood pressure?</h2>
+                    <div class="topic-body" id="load-blood-pressure" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
 
                 <div id="topic-numbers-mean" hidden>
                     <button type="button" class="back-btn">Back to topics</button>
                     <h2 tabindex="-1">What do the numbers mean?</h2>
                     <div class="topic-body" id="load-number-means" aria-live="polite">
                         <!-- Static education content is served by /api/education.php. -->
-                         Loading educational information…
+                        <p>Loading educational information…</p>
                     </div>
                 </div>
 

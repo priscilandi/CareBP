@@ -168,7 +168,7 @@ timeButtons.forEach(button => button.addEventListener('click', () => {
 // -------- Learn: static, sourced backend articles (no education table in upload) --------
 const topicButtons = [...document.querySelectorAll('.view-btn')];
 const topicViews = Object.fromEntries([
-    'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider',
+    'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider', 'managing-bp', 'blood-pressure'
 ].map(name => [name, $(`topic-${name}`)]));
 const learnGrid = document.querySelector('.learn-grid');
 const loadedTopics = new Set();
