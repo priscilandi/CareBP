@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="CareBP: learn about blood pressure and search community screening locations by ZIP code.">
+        <title>CareBP: Community Access, Resources, and Education for Blood Pressure</title>
+        
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <a class="skip-link" href="#main-content">Skip to main content</a>
+        
+        <header class="site-header">
+            <div class="branding">
+                ❤️
+                CareBP
+            </div>
+            <span class="location-chip">
+                📍
+                Screening locations
+            </span>
+        </header>
+
+        <div class="disclaimer-strip">
+            <strong>Educational tool only.</strong> CareBP doesn't diagnose or treat medical conditions. 
+            Always consult a healthcare professional for medical advice.
+            <a href="#" data-goto="about">Learn more</a>
+        </div>
+
+        <main id="main-content">
+            <!-- Home Tab -->
+            <section class="tab-panel" id="tab-home" aria-labelledby="home-heading">
+                <h1 id="home-heading">Understand your blood pressure</h1>
+                <p class="tab-subheading">
+                    Answer a couple of quick questions to get guidance and, if needed, find 
+                    care nearby - no account, no exact blood pressure screening results required.
+                </p>
+
+                <div class="step-block">
+                    <h2 class="step-label">Do you have a recent blood pressure reading?</h2>
+                    <div role="group" aria-label="Do you have a recent blood pressure reading?" class="choice-row">
+                        <button type="button" class="choice-btn" data-hasreading="yes" aria-pressed="false">Yes</button>
+                        <button type="button" class="choice-btn" data-hasreading="no" aria-pressed="false">No</button>
+                    </div>
+                </div>
+
+                <div class="home-no-panel" id="home-no-panel" hidden>
+                    <h3>No problem - let's figure out the best next step.</h3>
+
+                    <div class="step-block">
+                        <h2 class="step-label">Do you have access to a blood pressure screening machine?</h2>
+                        <div role="group" aria-label="Do you have access to a blood pressure screening machine?" class="choice-row">
+                            <button type="button" class="choice-btn" data-hasmachine="yes" aria-pressed="false">Yes</button>
+                            <button type="button" class="choice-btn" data-hasmachine="no" aria-pressed="false">No</button>
+                        </div>
+                    </div>
+
+                    <!-- Screening Instructions. Has machine -->
+                    <div class = "step-block" id="Screening-Instructions" hidden>
+                        <h3>How to measure your blood pressure correctly</h3>
+                        <ul>
+                            <li>Sit quietly for 5 minutes first - avoid caffeine, smoking, or exercise for 30 minutes beforehand.</li>
+                            <li>Sit with your back supported and both feet flat on the floor.</li>
+                            <li>Rest your arm on a table so the cuff sits level with your heart.</li>
+                            <li>Wrap the cuff snugly on a bare arm, not over clothing.</li>
+                            <li>Stay still and avoid talking while the reading is taken.</li>
+                        </ul>
+
+                        <!-- Continue button - takes user to home panel (Yes branch) -->
+                        <button type="button" class="quicklink" data-hasreading-ql="yes">
+                            <span class="quicklink-content">
+                                <h3>I have my reading - continue</h3>
+                                <p>Select the range that best matches your screening results.</p>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Quicklinks to either find care or learn more. Doesn't have machine -->
+                    <div class = "step-block" id="Screening-Locations/Resources" hidden>
+                        <button type="button" class="quicklink" data-goto="findcare">
+                            <span class="quicklink-content">
+                                <h3>Find care near you</h3>
+                                <p>Locations listed as offering BP screening; call ahead to confirm access and fees</p>
+                            </span>
+                        </button>
+                        <button type="button" class="quicklink" data-goto="learn">
+                            <span class="quicklink-content">
+                                <h3>Learn about blood pressure</h3>
+                                <p>Plain-language information about what your results mean</p>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="home-yes-panel" id="home-yes-panel" hidden>
+                    <!-- BP range options -->
+                    <div class="step-block">
+                        <h2 class="step-label">Select your blood pressure range</h2>
+                        <p class="help-text">Adult ranges, not for pregnancy. Choose the higher category if your upper and lower readings differ. If a reading is above 180 systolic or 120 diastolic, repeat after a minute and contact your clinician immediately if it stays that high; call 911 if you also have emergency symptoms.</p>
+                        <button type="button" class="bp-range-btn" data-bprange="normal" aria-pressed="false">
+                            <span>
+                                Below 120 AND below 80
+                                <span class="range-option-label">Normal</span>
+                            </span>
+                        </button>
+                        <button type="button" class="bp-range-btn" data-bprange="elevated" aria-pressed="false">
+                            <span>
+                                120–129 AND &lt;80 
+                                <span class="range-option-label">Elevated</span>
+                            </span>
+                        </button>
+                        <button type="button" class="bp-range-btn" data-bprange="high" aria-pressed="false">
+                            <span>
+                                130–139 OR 80–89
+                                <span class="range-option-label">High, Stage 1</span>
+                            </span>
+                        </button>
+                        <button type="button" class="bp-range-btn" data-bprange="veryhigh" aria-pressed="false">
+                            <span>
+                                140+ OR 90+
+                                <span class="range-option-label">High, Stage 2</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Time since last screening (TSLS) -->
+                    <div class="step-block" id="TSLS" hidden>
+                        <h2>How long since this screening?</h2>
+                        <button type="button" class="bp-time-btn" data-bptime="within3months" aria-pressed="false">
+                            Within the last 3 months
+                        </button>
+                        <button type="button" class="bp-time-btn" data-bptime="3to12months" aria-pressed="false">
+                            3 to 12 months ago
+                        </button>
+                        <button type="button" class="bp-time-btn" data-bptime="over12months" aria-pressed="false">
+                            Over 12 months ago 
+                        </button>
+                        <button type="button" class="bp-time-btn" data-bptime="unknown" aria-pressed="false">
+                            Not sure
+                        </button>
+                    </div>
+
+                    <!-- Next steps -->
+                    <div class="step-block" id="NextSteps" hidden>
+                        <h2>Next steps</h2>
+                        <p>
+                            Based on your blood pressure range and how long since your 
+                            last screening, here are some next steps you can take.
+                        </p>
+                        <button type="button" class="quicklink" data-goto="findcare">
+                            <span class="quicklink-content">
+                                <h3>Find care near you</h3>
+                                <p>Locations listed as offering BP screening; call ahead to confirm access and fees</p>
+                            </span>
+                        </button>
+                        <button type="button" class="quicklink" data-goto="learn">
+                            <span class="quicklink-content">
+                                <h3>Learn about blood pressure</h3>
+                                <p>Plain-language information about what your results mean</p>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Recommendations for Blood Pressure Range - Populated by database -->
+                    <div class="rec-panel" id="range-recommendations" aria-live="polite" hidden>
+                        
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Learn Tab -->
+            <section class="tab-panel" id="tab-learn" hidden aria-labelledby="learn-heading">
+                <!-- Content for the Learn tab -->
+                <div class="learn-grid">
+                    <h1 id="learn-heading">Learn about blood pressure</h1>
+                    <p class="tab-subheading">Short, plain-language answers - tap any topic to read more.</p>
+
+                    <button class="view-btn" type="button" data-topic="numbers-mean">
+                        What do the numbers mean?
+                        <span>
+                            A blood pressure reading has two numbers: the pressure when your heart beats, 
+                            and the pressure when it rests between beats. Together they tell you which range you're in — 
+                            normal, elevated, or high.
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="risk">
+                        Risk of high blood pressure
+                        <span>
+                            Left unchecked, high blood pressure can raise your risk for heart disease and stroke over time. 
+                            The good news: catching it early and making small changes goes a long way.
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="check-home">
+                        How can you check at home?
+                        <span>
+                            Sit still for five minutes first, keep your feet flat and arm supported at heart height, 
+                            and take two readings a minute apart. Some community locations and pharmacies may have screening equipment; check access before visiting.
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="pregnancy">
+                        Pregnancy and blood pressure
+                        <span>
+                            Blood pressure can rise during pregnancy in ways that need closer watching than usual. 
+                            Regular checks throughout pregnancy help catch changes early for you and your baby.
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="midlife-and-menopause">
+                        Midlife and menopause changes
+                        <span>
+                            Blood pressure often rises after menopause as hormone levels shift. It's a normal 
+                            reason to start checking more regularly, even if your numbers were always fine before.
+                        </span>
+                    </button>
+                    <button class="view-btn" type="button" data-topic="talk-to-provider">
+                        Talking to your provider
+                        <span>
+                            Bring your range (not just one reading) and any questions you have. It's okay to 
+                            ask what a number means or what to watch for — that's what the visit is for.
+                        </span>
+                    </button>
+                </div>
+
+
+                <div id="topic-numbers-mean" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">What do the numbers mean?</h2>
+                    <div class="topic-body" id="load-number-means" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                         Loading educational information…
+                    </div>
+                </div>
+
+                <div id="topic-risk" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">Risk of high blood pressure</h2>
+                    <div class="topic-body" id="load-risk" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+
+                <div id="topic-check-home" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">How can you check at home?</h2>
+                    <div class="topic-body" id="load-check-home" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+
+                <div id="topic-pregnancy" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">Pregnancy and blood pressure</h2>
+                    <div class="topic-body" id="load-pregnancy" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+
+                <div id="topic-midlife-and-menopause" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">Midlife and menopause changes</h2>
+                    <div class="topic-body" id="load-midlife-and-menopause" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+
+                <div id="topic-talk-to-provider" hidden>
+                    <button type="button" class="back-btn">Back to topics</button>
+                    <h2 tabindex="-1">Talking to your provider</h2>
+                    <div class="topic-body" id="load-talk-to-provider" aria-live="polite">
+                        <!-- Static education content is served by /api/education.php. -->
+                        <p>Loading educational information…</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Find Care Tab -->
+            <section class="tab-panel" id="tab-findcare" hidden aria-labelledby="findcare-heading">
+                <!-- Find Care uses /api/facilities.php and /api/location-types.php. -->
+                <h1 id="findcare-heading">Find care near you</h1>
+                <p class="tab-subheading">
+                    Search by ZIP code or browse listed screening locations. Each location has a map-search link; contact the site to confirm screening access.
+                </p>
+                
+                <form class="care-search" id="care-search-form" novalidate>
+                    <label for="zip-input" class="visually-hidden">Zip code:</label>
+                    <input type="text" id="zip-input" name="zip" placeholder="Enter ZIP code, e.g. 30901" 
+                    inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5">
+                    <button class="care-submit" type="submit">Search</button>
+                </form>
+                <div class="care-filters">
+                    <label for="care-type-filter">Location type</label>
+                    <select id="care-type-filter"><option value="">All types</option></select>
+                    <label for="care-name-filter">Name or city</label>
+                    <input id="care-name-filter" type="search" maxlength="100" placeholder="Optional keyword">
+                </div>
+                <p class="care-search-error" id="care-search-error" role="alert" hidden></p>
+                <p id="care-search-status" class="help-text" role="status" aria-live="polite">Loading screening locations…</p>
+
+                <div id="map-container" role="region" aria-label="Location map">
+                    <p>Maps are available for locations with coordinates; every listing includes a map-search link.</p>
+                </div>
+                
+                <p class="help-text">These are sponsor-listed BP-monitor locations. A listing does not establish walk-in access, current availability, hours, or cost. Call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.</p>
+
+                <div class="care-list" id="care-list" aria-live="polite"></div>
+                <div class="care-pagination" id="care-pagination" hidden>
+                    <button type="button" id="care-prev">Previous</button>
+                    <span id="care-page-label"></span>
+                    <button type="button" id="care-next">Next</button>
+                </div>
+
+                <div class="referral-callout">
+                    <h3>In a high range?</h3>
+                    <p>Talk with a healthcare professional about persistently elevated readings. These listings are primarily screening locations, not a directory of urgent-care services. For a medical emergency, call 911.</p>
+                </div>
+            </section>
+
+
+            <!-- About Tab -->
+            <section class="tab-panel" id="tab-about" hidden aria-labelledby="about-heading">
+                <!-- Content for the About tab -->
+                <h1 id="about-heading">About CareBP</h1>
+                <p class="tab-subheading">
+                    A community tool to help people understand their blood pressure and 
+                    find real places to get checked and cared for.
+                </p>
+
+                <div class="about-block">
+                    <h2>Education and navigation, not diagnosis</h2>
+                    <p>
+                        CareBP gives general, plain-language information based on the range you select. 
+                        It doesn't diagnose any condition or replace a conversation with a healthcare provider. 
+                        If you're having a medical emergency, call 911.
+                    </p>
+                </div>
+                <div class="about-block">
+                    <h2>Your Privacy</h2>
+                    <p>
+                        CareBP doesn't ask for your name, exact blood pressure numbers, or any personal health information.
+                        Your exact BP numbers are not requested or stored. Your selected BP category ID is sent to the API to retrieve guidance. ZIP codes and optional search terms are also sent to the search API. These requests may appear in standard server logs.
+                    </p>
+                </div>
+                <div class="about-block">
+                    <h2>Built for the community</h2>
+                    <p>
+                        This tool is designed with rural communities and women's health in mind — groups who 
+                        often face extra barriers to blood pressure screening and care.
+                    </p>
+                </div>
+                <div class="about-block">
+                    <h2>Growing over time</h2>
+                    <p>
+                        CareBP starts with blood pressure. Future versions may expand to cover 
+                        other everyday health topics important to your community.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <nav class="tab-bar" aria-label="Main">
+            <!-- Bottom navigation -->
+            <button type="button" class="tab-btn" data-tab="home" aria-current="page">
+                🏠
+                Home
+            </button>
+            <button type="button" class="tab-btn" data-tab="learn">
+                📚
+                Learn
+            </button>
+            <button type="button" class="tab-btn" data-tab="findcare">
+                🏥
+                Find Care
+            </button>
+            <button type="button" class="tab-btn" data-tab="about">
+                💡
+                About
+            </button>
+        </nav>
+        <script src="script.js" defer></script>
+    </body>
+</html>

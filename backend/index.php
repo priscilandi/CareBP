@@ -1,9 +1,7 @@
 <?php
 
-header('Content-Type: application/json');
+declare(strict_types=1);
 
-echo json_encode([
-    'application' => 'CareBP',
-    'backend' => 'PHP',
-    'status' => 'running'
-]);
+// Legacy entry point; the public health endpoint is /api/health.php.
+require __DIR__ . '/api/health.php';
+
