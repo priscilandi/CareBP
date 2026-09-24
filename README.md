@@ -1,6 +1,6 @@
 # CareBP — LAMP installation and testing
 
-CareBP is a browser-based blood-pressure education and screening-location directory. Its stack is **Linux + Apache + MySQL/MariaDB + PHP 8.1+**, with a plain **HTML/CSS/JavaScript frontend**. The frontend makes same-origin requests to six public PHP JSON endpoints. There is no npm build, Composer install, or JavaScript framework required to run the site.
+CareBP is a browser-based blood-pressure education and screening-location directory. Its stack is **Linux + Apache + MySQL 8+ + PHP 8.1+**, with a plain **HTML/CSS/JavaScript frontend**. The frontend makes same-origin requests to six public PHP JSON endpoints. There is no npm build, Composer install, or JavaScript framework required to run the site.
 
 The supplied `database/seed.sql` contains **9 location types, 39 sponsor-supplied screening locations, 4 BP categories, and 4 demonstration recommendations**. All 39 location entries are active and marked as offering a BP screening. However, `last_verified` is `NULL`, and the seed does not independently establish that equipment is available today. Check current availability before directing someone to a site. **The four `Demo guidance` rows are placeholder content, not clinical instructions; the frontend deliberately hides them as medical guidance.**
 
@@ -28,25 +28,25 @@ CareBP-main/
 
 ## 2. Install the LAMP components
 
-On **Debian or Ubuntu**, install Apache, MariaDB, PHP, and PHP's MySQL PDO extension:
+On **Debian or Ubuntu**, install Apache, **MySQL Server 8+**, PHP, and PHP's MySQL PDO extension:
 
 ```bash
 sudo apt update
-sudo apt install apache2 mariadb-server php libapache2-mod-php php-mysql
-sudo systemctl enable --now mariadb apache2
+sudo apt install apache2 mysql-server php libapache2-mod-php php-mysql
+sudo systemctl enable --now mysql apache2
 php -v                          # Requires PHP 8.1 or later
 php -m | grep -i pdo_mysql      # Must show pdo_mysql
 sudo apache2ctl configtest      # Expected: Syntax OK
 ```
 
-MySQL 8+ can replace MariaDB. On a MySQL installation, substitute `mysql` for the `mariadb` service/client where appropriate. If using PHP-FPM rather than `libapache2-mod-php`, configure Apache's PHP-FPM handler separately. If the `pdo_mysql` check is empty, the database-backed endpoints will fail even if MariaDB is running.
+This setup uses MySQL throughout. If using PHP-FPM rather than `libapache2-mod-php`, configure Apache's PHP-FPM handler separately. If the `pdo_mysql` check is empty, database-backed endpoints will fail even if MySQL is running.
 
 ## 3. Create and seed a **development** database
 
 From the project root (the directory containing `backend`, `frontend`, and `database`), open the administrative SQL shell:
 
 ```bash
-sudo mariadb
+sudo mysql
 ```
 
 Run this SQL, replacing the password with your own strong local password:
@@ -63,8 +63,8 @@ EXIT;
 If the user/database already exists, adapt these statements rather than running `CREATE` twice. The runtime PHP user needs **SELECT only** because the public API is read-only. Run schema and seed imports as a database administrator:
 
 ```bash
-sudo mariadb carebp < database/schema.sql
-sudo mariadb carebp < database/seed.sql
+sudo mysql carebp < database/schema.sql
+sudo mysql carebp < database/seed.sql
 ```
 
 **Important: `seed.sql` resets data.** It deletes existing recommendations, locations, categories, and types (in foreign-key-safe order), resets their AUTO_INCREMENT counters, then inserts the supplied development dataset. You may re-run it on a *dedicated development database*, but **never run it against production or independently maintained data**. `schema.sql` is intended for an empty database; it is not a migration.
@@ -72,10 +72,11 @@ sudo mariadb carebp < database/seed.sql
 Verify the import:
 
 ```bash
-sudo mariadb carebp -e 'SELECT COUNT(*) AS locations FROM healthcare_locations; SELECT COUNT(*) AS types FROM location_types; SELECT COUNT(*) AS categories FROM bp_categories; SELECT COUNT(*) AS recommendations FROM recommendations;'
+sudo mysql carebp -e 'SELECT COUNT(*) AS locations FROM healthcare_locations; SELECT COUNT(*) AS types FROM location_types; SELECT COUNT(*) AS categories FROM bp_categories; SELECT COUNT(*) AS recommendations FROM recommendations;'
 # Expected row counts: 39, 9, 4, 4 (in that order)
-sudo mariadb carebp < database/zip_search.sql
+sudo mysql carebp < database/zip_search.sql
 # ZIP 30904: Reese Library, Good Shepherd Baptist Church, The HUB Augusta Locally Grown
+python3 tests/test_seed.py  # Real MySQL read-only checks; requires configured .env
 ```
 
 The developer seed omits mobile-only or nonpublic BP-monitor entries described in its SQL comments. It also leaves unknown coordinates, hours, phone numbers, and last-verification timestamps as `NULL`.
@@ -149,19 +150,18 @@ Open **http://127.0.0.1:8000/**. The allowlisted router intentionally prevents d
 
 ## 7. Test backend, database seed, and frontend
 
-The repository includes automated tests with **distinct verification levels**. Do not interpret a mock-UI test or SQLite-based seed check as proof that MySQL is working.
+The repository includes automated tests with **distinct verification levels**. Only the live database checks verify MySQL; the mock-UI test is not a database test.
 
-**A. Syntax and supplied seed consistency** (PHP, Node.js for JS syntax, and Python 3 standard library for seed tests):
+**A. Syntax checks** (PHP and Node.js):
 
 ```bash
 find backend -name '*.php' -print0 | xargs -0 -n1 php -l
 node --check frontend/script.js
-python3 tests/test_seed.py
 ```
 
-`test_seed.py` replays the supplied `seed.sql` against an in-memory **SQLite analogue** of the database, checks all 39 locations, nine types and foreign keys, and checks the development seed can be rerun. It is a portability/data-integrity check; MySQL-specific behavior still requires an actual MySQL/MariaDB import.
+**B. Real MySQL seed checks**: After importing `schema.sql` and `seed.sql` into a dedicated development MySQL database and configuring `.env`, run `python3 tests/test_seed.py`. This test calls the `mysql` command-line client to verify seeded counts, reference integrity, screening flags, and known ZIP/name results. It does not modify database records or rerun the destructive development seed. The MySQL client must be installed and available on PATH.
 
-**B. Real HTTP + MySQL integration**: Start Apache or the PHP dev server, confirm `/api/health.php` says `database: connected`, then run:
+**C. Real HTTP + MySQL integration**: Start Apache or the PHP dev server, confirm `/api/health.php` says `database: connected`, then run:
 
 ```bash
 python3 tests/test_api.py --base-url http://127.0.0.1:8000
@@ -178,7 +178,7 @@ python3 tests/test_api.py --base-url http://127.0.0.1:8000 --expect-db-missing
 
 That mode expects HTTP **503** for database-backed endpoints and checks that the independent education endpoint continues to respond. It does **not** test database connectivity.
 
-**C. Browser frontend test** (optional development dependency):
+**D. Browser frontend test** (optional development dependency):
 
 ```bash
 python3 -m pip install playwright
@@ -207,7 +207,7 @@ All public endpoints are read-only. Invalid ZIPs return HTTP **422**; unknown pu
 
 ## 9. Troubleshooting and implementation limits
 
-- **503 `database_unavailable`:** Start MySQL/MariaDB, check the `.env` credentials/host, and confirm `pdo_mysql` is installed in the **same PHP runtime Apache uses**.
+- **503 `database_unavailable`:** Start MySQL, check the `.env` credentials/host, and confirm `pdo_mysql` is installed in the **same PHP runtime Apache uses**.
 - **500 `database_error`:** Confirm the schema and seed were imported into `carebp`, all four tables exist, and `carebp` has SELECT privileges.
 - **404 on API routes in Apache:** Confirm the `Alias /api/` entry, PHP handler, and virtual-host activation. Verify `DocumentRoot` remains `frontend/`.
 - **Empty or incorrect Find Care:** Reimport only in a dedicated development database. Seeded ZIP `30904` has exactly three locations. Rerunning `seed.sql` deletes all records in the four seeded tables first.
