@@ -2,24 +2,21 @@
 -- CareBP Development Seed Data
 -- Includes sponsor-provided verified BP-monitor locations
 -- =========================================
+-- DEVELOPMENT DATA: clears existing entries in these four tables.
+-- Do not run on a database containing independently maintained records.
 
-
--- Clear existing development data so this file can be rerun safely.
 DELETE FROM recommendations;
 DELETE FROM healthcare_locations;
 DELETE FROM bp_categories;
 DELETE FROM location_types;
 
--- Reset AUTO_INCREMENT IDs so seeded foreign-key IDs remain predictable.
 ALTER TABLE recommendations AUTO_INCREMENT = 1;
 ALTER TABLE healthcare_locations AUTO_INCREMENT = 1;
 ALTER TABLE bp_categories AUTO_INCREMENT = 1;
 ALTER TABLE location_types AUTO_INCREMENT = 1;
 
 -- LOCATION TYPES
-
-INSERT INTO location_types (type_name, description)
-VALUES
+INSERT INTO location_types (type_name, description) VALUES
 ('Hospital', 'Hospital or emergency medical facility'),
 ('Urgent Care', 'Walk-in urgent care facility'),
 ('Pharmacy', 'Pharmacy offering healthcare services'),
@@ -30,11 +27,10 @@ VALUES
 ('School', 'School or educational location with a BP monitor'),
 ('Salon', 'Salon or personal-care location with a BP monitor');
 
-
 -- HEALTHCARE LOCATIONS
-
--- Seeded records are marked Completed = Yes by the sponsor. Where the sponsor spreadsheet omitted a ZIP, the ZIP was verified from an authoritative library/system or government source before insertion.
+-- All entries are sponsor-completed locations supplied for development.
 -- Unknown phone, hours, coordinates, and website values remain NULL.
+-- last_verified remains NULL until separately confirmed and timestamped.
 INSERT INTO healthcare_locations
 (type_id, name, address, city, state, zip_code, phone, hours,
  latitude, longitude, offers_bp_screening, website, is_active, last_verified)
@@ -79,29 +75,19 @@ VALUES
 (8, 'Augusta Prep', '285 Flowing Wells Rd.', 'Augusta', 'GA', '30907', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL),
 (8, 'Bamberg Middle School', '897 North St.', 'Bamberg', 'SC', '29003', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL);
 
--- Sponsor-completed entries without a fixed public BP-monitor location are intentionally not inserted here:
--- Phi Chi Chapter provides mobile/community BP screenings rather than a permanent public monitor location.
--- DLAS BP-monitor equipment is housed internally in animal-research/vivarium facilities and is not a public screening location.
--- The sponsor's Early Headstart in Burke County entry does not identify a specific fixed public BP-monitor location, so it remains pending clarification.
+-- Not inserted: Phi Chi Chapter mobile screenings, DLAS vivarium-only equipment,
+-- and the Early Headstart entry awaiting a fixed public location.
+-- The sponsor spreadsheet is the source of truth for BP-monitor rollout.
 
--- The sponsor spreadsheet remains the source of truth for BP-monitor rollout;
--- external sources should only be used to complete missing location details.
-
--- BP CATEGORIES
-
-INSERT INTO bp_categories (category_name, display_order)
-VALUES
+INSERT INTO bp_categories (category_name, display_order) VALUES
 ('Normal', 1),
 ('Elevated', 2),
 ('Stage 1 Hypertension', 3),
 ('Stage 2 Hypertension', 4);
 
-
--- RECOMMENDATIONS
-
+-- DEMONSTRATION PLACEHOLDERS ONLY. Never use as clinical guidance.
 INSERT INTO recommendations
-(category_id, type_id, guidance_text, care_level, approved)
-VALUES
+(category_id, type_id, guidance_text, care_level, approved) VALUES
 (1, NULL, 'Demo guidance for normal blood pressure.', 'Routine', 1),
 (2, 3, 'Demo guidance for elevated blood pressure.', 'Routine', 1),
 (3, 4, 'Demo guidance for Stage 1 hypertension.', 'Follow-up', 1),
