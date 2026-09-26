@@ -5,7 +5,11 @@
 const $ = (id) => document.getElementById(id);
 const tabButtons = [...document.querySelectorAll('.tab-btn')];
 const panels = Object.fromEntries(['home', 'learn', 'findcare', 'about'].map(name => [name, $(`tab-${name}`)]));
-
+var map = L.map("map-container").setView([33.4700,-81.9750], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 function goToTab(name) {
     if (!Object.hasOwn(panels, name)) return;
     for (const [key, panel] of Object.entries(panels)) panel.hidden = key !== name;
