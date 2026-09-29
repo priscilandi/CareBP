@@ -26,6 +26,12 @@ CREATE TABLE healthcare_locations (
 CREATE INDEX idx_healthcare_locations_zip
 ON healthcare_locations(zip_code);
 
+CREATE TABLE zip_codes (
+    zip_code VARCHAR(5) PRIMARY KEY,
+    latitude DECIMAL(10, 7) NOT NULL,
+    longitude DECIMAL(10, 7) NOT NULL
+);
+
 CREATE TABLE bp_categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(100) NOT NULL UNIQUE,
