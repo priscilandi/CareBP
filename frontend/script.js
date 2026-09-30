@@ -6,17 +6,25 @@ const $ = (id) => document.getElementById(id);
 const tabButtons = [...document.querySelectorAll('.tab-btn')];
 const panels = Object.fromEntries(['home', 'learn', 'findcare', 'about'].map(name => [name, $(`tab-${name}`)]));
 
+
+// Function that takes the name of each tab and switches views based on what the user selects
 function goToTab(name) {
+    // Check just in case a call is made on a tab that doesn't exist
     if (!Object.hasOwn(panels, name)) return;
     for (const [key, panel] of Object.entries(panels)) panel.hidden = key !== name;
+    // Updates the tab button to show the user which one is active and removes the highlight from previous tab button
     for (const button of tabButtons) {
         if (button.dataset.tab === name) button.setAttribute('aria-current', 'page');
         else button.removeAttribute('aria-current');
     }
+    // Scroll to the top of the page when a new tab is clicked
     window.scrollTo({top: 0, behavior: 'instant'});
 }
 
+
 tabButtons.forEach(button => button.addEventListener('click', () => goToTab(button.dataset.tab)));
+
+// Listener for the whole page that will look out for anything with a goto tag given to it
 document.addEventListener('click', event => {
     const link = event.target.closest('[data-goto]');
     if (link) {
@@ -25,20 +33,25 @@ document.addEventListener('click', event => {
     }
 });
 
+// Validates all json content that is recieved from backend
 async function requestJson(path) {
     const response = await fetch(path, {headers: {Accept: 'application/json'}, credentials: 'same-origin'});
     let payload;
+    // wait for the json to be decoded
     try { payload = await response.json(); }
+    // if the json fails to decode then display an error message to the user
     catch { throw new Error('The server did not return valid JSON.'); }
+    // Check the HTTP status and if its not ok throw an error to prevent a crash
     if (!response.ok) throw new Error(payload?.error?.message || `Request failed (${response.status}).`);
     return payload;
 }
 
+// helper function that sets the pressed attribute for the one that was pressed and removes it from all other buttons if any have it set to true
 function setPressed(buttons, selected) {
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button === selected)));
 }
 
-// -------- Home: the uploaded yes/no -> screening -> range -> timing flow --------
+// -------- Home: yes/no -> screening -> range -> timing flow ------------------------------------------------
 const readingButtons = [...document.querySelectorAll('[data-hasreading]')];
 const machineButtons = [...document.querySelectorAll('[data-hasmachine]')];
 const rangeButtons = [...document.querySelectorAll('[data-bprange]')];
@@ -49,6 +62,7 @@ let selectedTime = '';
 let selectionVersion = 0;
 let bpCategories = null;
 
+// 
 const categoryPromise = requestJson('/api/categories.php')
     .then(payload => {
         bpCategories = payload.data;
@@ -56,6 +70,7 @@ const categoryPromise = requestJson('/api/categories.php')
     })
     .catch(() => null);
 
+// Helper function that moves the users view of the homescreen into the "Yes I have reading" state
 function enterYesBranch() {
     setPressed(readingButtons, readingButtons.find(button => button.dataset.hasreading === 'yes'));
     $('home-no-panel').hidden = true;
@@ -84,12 +99,15 @@ const rangeInfo = {
 };
 const ahaReadings = 'https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings';
 
+// Given the range chosen by the user, find the matching row in the Real DB and return its numeric value
 function currentCategoryId() {
     const namePart = {normal: 'normal', elevated: 'elevated', high: 'stage 1', veryhigh: 'stage 2'}[selectedRange];
     const item = bpCategories?.find(row => row.category_name.toLowerCase().includes(namePart));
     return item?.category_id;
 }
 
+// Below are to DOM-building helper functions used throughout the script.js file.
+// building elements with .createElement() is much safer and prevents injections of tags or broken markup from special characters
 function putText(container, tag, content, className = '') {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -107,6 +125,7 @@ function putLink(container, label, href) {
     return link;
 }
 
+// Only runs once the user has picked a range and a timeframe. Once they do it immediatly shows them static hardcoded text while it fetches the extra content
 async function populateRecommendationPanel() {
     if (!selectedRange || !selectedTime) return;
     const thisSelection = ++selectionVersion;
@@ -122,17 +141,22 @@ async function populateRecommendationPanel() {
     putText(recPanel, 'p', 'Checking one box here is not a diagnosis. Pregnancy uses different thresholds.', 'help-text');
     const loading = putText(recPanel, 'p', 'Checking for additional published guidance…', 'help-text');
     const categories = await categoryPromise;
+    // Checks to see if a range is selected as well as a timeframe
     if (thisSelection !== selectionVersion) return;
     const categoryId = categories ? currentCategoryId() : null;
     if (!categoryId) {
+        // Either the fetch failed, or a match couldn't be made for the range that the user selected
         loading.textContent = 'Additional database guidance is unavailable; the information above is general education.';
         return;
     }
     try {
+        // Ask for additional recommendation rows tied to chosen range
         const payload = await requestJson(`/api/recommendations.php?category_id=${categoryId}`);
+        // Checks for a stale state
         if (thisSelection !== selectionVersion) return;
         const published = payload.data.filter(row => !row.is_demo);
-        loading.remove();
+        // Removes the checking message once the check for stale state is finished
+        loading.remove(); 
         if (published.length) {
             putText(recPanel, 'h4', 'Additional published guidance');
             for (const recommendation of published) {
@@ -165,7 +189,7 @@ timeButtons.forEach(button => button.addEventListener('click', () => {
     void populateRecommendationPanel();
 }));
 
-// // -------- Learn: static, sourced backend articles (no education table in upload) --------
+// -------- Learn: static, sourced backend articles (no education table in upload) --------
 // const topicButtons = [...document.querySelectorAll('.view-btn')];
 // const topicViews = Object.fromEntries([
 //     'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider', 'managing-bp', 'blood-pressure'
@@ -175,8 +199,8 @@ timeButtons.forEach(button => button.addEventListener('click', () => {
 // let topicViewVersion = 0;
 
 
-// WE SHOULDN'T NEED THIS IF WE ARE HARD CODING IN SUMMARIES AND HAVING A LINK TO AHA FOR THE USER TO READ MORE
-// It fetches the data provided from the database for each piece of educational content
+// // WE SHOULDN'T NEED THIS IF WE ARE HARD CODING IN SUMMARIES AND HAVING A LINK TO AHA FOR THE USER TO READ MORE
+// // It fetches the data provided from the database for each piece of educational content
 // async function goToTopic(name) {
 //     if (!Object.hasOwn(topicViews, name)) return;
 //     const version = ++topicViewVersion;
@@ -203,16 +227,16 @@ timeButtons.forEach(button => button.addEventListener('click', () => {
 //     }
 // }
 
-// Listens for a click to any of the card on the learn page
-topicButtons.forEach(button => button.addEventListener('click', () => { void goToTopic(button.dataset.topic); }));
-// Listens for a click of the back button
-document.querySelectorAll('.back-btn').forEach(button => button.addEventListener('click', () => {
-    topicViewVersion++;
-    Object.values(topicViews).forEach(panel => { panel.hidden = true; });
-    learnGrid.hidden = false;
-    topicButtons[0]?.focus();
-    window.scrollTo({top: 0, behavior: 'instant'});
-}));
+// // Listens for a click to any of the card on the learn page
+// topicButtons.forEach(button => button.addEventListener('click', () => { void goToTopic(button.dataset.topic); }));
+// // Listens for a click of the back button
+// document.querySelectorAll('.back-btn').forEach(button => button.addEventListener('click', () => {
+//     topicViewVersion++;
+//     Object.values(topicViews).forEach(panel => { panel.hidden = true; });
+//     learnGrid.hidden = false;
+//     topicButtons[0]?.focus();
+//     window.scrollTo({top: 0, behavior: 'instant'});
+// }));
 
 // -------- Find Care: active screening locations in the uploaded SQL seed --------
 const searchForm = $('care-search-form');
@@ -226,21 +250,26 @@ const pagination = $('care-pagination');
 let currentPage = 1;
 let requestVersion = 0;
 
+// Helper function to show the error message on a failed search
 function showSearchError(message = '') {
     searchError.textContent = message;
     searchError.hidden = !message;
 }
+// Builds an OpenStreetMap search URL for a location without precise coordinated - This provides a fallback so the user can still see the map
 function mapSearchUrl(location) {
     const address = [location.name, location.address, location.city, location.state, location.zip_code]
         .filter(Boolean).join(', ');
     return `https://www.openstreetmap.org/search?query=${encodeURIComponent(address)}`;
 }
+// Checks that a url is syntactically correct before it turns it into a clickable <a href="...">
 function safeWebsite(value) {
     try {
         const url = new URL(value);
         return ['https:', 'http:'].includes(url.protocol) ? url.href : null;
     } catch { return null; }
 }
+
+// Build on location "card" DOM element
 function renderCard(location) {
     const card = document.createElement('article');
     card.className = 'care-card';
@@ -252,6 +281,7 @@ function renderCard(location) {
     const actions = document.createElement('div');
     actions.className = 'care-actions';
     if (location.phone) {
+        // Cleans up the phone number provided with the care locations information
         const cleanPhone = location.phone.replace(/[^+0-9]/g, '');
         if (cleanPhone) putLink(actions, `Call ${location.phone}`, `tel:${cleanPhone}`);
     }
@@ -261,6 +291,8 @@ function renderCard(location) {
     card.append(actions);
     return card;
 }
+
+// Show the embedded OpenStreetMap iframe if there is at least one result with valid coordinates
 function renderMap(rows) {
     const mapContainer = $('map-container');
     mapContainer.replaceChildren();
@@ -279,17 +311,23 @@ function renderMap(rows) {
         layer: 'mapnik', marker: `${lat},${lng}`,
     });
     const frame = document.createElement('iframe');
-    frame.loading = 'lazy';
+    // Doesn't load the map until it's needed
+    frame.loading = 'lazy';     
+    // Prevents the site's URL from being passed to the OpenStreetMap's servers
     frame.referrerPolicy = 'no-referrer';
+    // Provides an accessible name for screen readers to read from
     frame.title = `Map preview of ${first.name}`;
     frame.src = `https://www.openstreetmap.org/export/embed.html?${params}`;
     mapContainer.append(frame);
     putText(mapContainer, 'p', `Map preview shows ${first.name}. Other results have individual map links.`, 'help-text');
 }
+
+// Gets each location types and populates the lsit of locations found in the ZIP code aread
 async function loadTypes() {
     try {
         const {data} = await requestJson('/api/location-types.php');
         for (const type of data) {
+            // Skips any types that have zero locations attached
             if (type.location_count === 0) continue;
             const option = document.createElement('option');
             option.value = String(type.type_id);
@@ -298,33 +336,44 @@ async function loadTypes() {
         }
     } catch { /* An unfiltered ZIP search remains usable if type lookup fails. */ }
 }
+
+// Runs all of the actual Find Care requests
 async function loadLocations(page = 1) {
     const zip = zipInput.value.trim();
+    // Validates the ZIP is 5-digits and contains no characters
     if (zip && !/^\d{5}$/.test(zip)) {
         showSearchError('Enter a valid five-digit ZIP code, or leave it blank to browse all locations.');
         zipInput.focus();
         return;
     }
     showSearchError();
+    // Check for a stale state
     const version = ++requestVersion;
     currentPage = page;
     searchStatus.textContent = 'Searching locations…';
     list.replaceChildren();
     pagination.hidden = true;
+
+    // Builds a query string in order to handle things like spaces and special characters correctly instead of concatenating by hand
     const params = new URLSearchParams({page: String(page), per_page: '9'});
     if (zip) params.set('zip', zip);
     if (typeFilter.value) params.set('type_id', typeFilter.value);
     if (nameFilter.value.trim()) params.set('q', nameFilter.value.trim());
+
     try {
         const payload = await requestJson(`/api/facilities.php?${params}`);
+        // If there is a stale state then we need to terminate the search for the last ZIP provided to begin the new search
         if (version !== requestVersion) return;
         const rows = payload.data;
         const meta = payload.meta;
+        // Build a string to describe the results of the search
         searchStatus.textContent = meta.total === 0
             ? 'No listed locations match this search. Try another ZIP code or clear a filter.'
             : `${meta.total} matching location${meta.total === 1 ? '' : 's'}${zip ? ` for ZIP ${zip}` : ''}. Showing page ${meta.page} of ${meta.total_pages}.`;
         rows.forEach(location => list.append(renderCard(location)));
         renderMap(rows);
+
+        // Only display the pagination controls if there's more than one page of results
         if (meta.total_pages > 1) {
             pagination.hidden = false;
             $('care-page-label').textContent = `Page ${meta.page} of ${meta.total_pages}`;
@@ -339,10 +388,17 @@ async function loadLocations(page = 1) {
         putText($('map-container'), 'p', 'Location data is currently unavailable.');
     }
 }
+
+// Presents a full-page reload when submitting a new ZIP form
 searchForm.addEventListener('submit', event => { event.preventDefault(); void loadLocations(1); });
+
+// Listens for changes in the ZIP search box and the drop down. If there is a change in either the whole page is re-loaded
 typeFilter.addEventListener('change', () => { void loadLocations(1); });
 nameFilter.addEventListener('change', () => { void loadLocations(1); });
 $('care-prev').addEventListener('click', () => { if (currentPage > 1) void loadLocations(currentPage - 1); });
 $('care-next').addEventListener('click', () => { void loadLocations(currentPage + 1); });
+
+// These two calls below run immediately when the script loads to insure that users are seeing real data as soon as they
+// click to the Find Care tab
 void loadTypes();
 void loadLocations(1);
