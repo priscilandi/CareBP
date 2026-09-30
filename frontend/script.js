@@ -165,41 +165,47 @@ timeButtons.forEach(button => button.addEventListener('click', () => {
     void populateRecommendationPanel();
 }));
 
-// -------- Learn: static, sourced backend articles (no education table in upload) --------
-const topicButtons = [...document.querySelectorAll('.view-btn')];
-const topicViews = Object.fromEntries([
-    'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider', 'managing-bp', 'blood-pressure'
-].map(name => [name, $(`topic-${name}`)]));
-const learnGrid = document.querySelector('.learn-grid');
-const loadedTopics = new Set();
-let topicViewVersion = 0;
+// // -------- Learn: static, sourced backend articles (no education table in upload) --------
+// const topicButtons = [...document.querySelectorAll('.view-btn')];
+// const topicViews = Object.fromEntries([
+//     'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider', 'managing-bp', 'blood-pressure'
+// ].map(name => [name, $(`topic-${name}`)]));
+// const learnGrid = document.querySelector('.learn-grid');
+// const loadedTopics = new Set();
+// let topicViewVersion = 0;
 
-async function goToTopic(name) {
-    if (!Object.hasOwn(topicViews, name)) return;
-    const version = ++topicViewVersion;
-    learnGrid.hidden = true;
-    for (const [key, panel] of Object.entries(topicViews)) panel.hidden = key !== name;
-    window.scrollTo({top: 0, behavior: 'instant'});
-    topicViews[name].querySelector('h2').focus();
-    if (loadedTopics.has(name)) return;
-    const body = topicViews[name].querySelector('.topic-body');
-    body.replaceChildren(putText(document.createDocumentFragment(), 'p', 'Loading topic…'));
-    try {
-        const {data} = await requestJson(`/api/education.php?topic=${encodeURIComponent(name)}`);
-        if (version !== topicViewVersion) return;
-        body.replaceChildren();
-        for (const paragraph of data.paragraphs) putText(body, 'p', paragraph);
-        putLink(body, `Source: ${data.source_label}`, data.source_url);
-        loadedTopics.add(name);
-    } catch {
-        if (version !== topicViewVersion) return;
-        const button = topicButtons.find(item => item.dataset.topic === name);
-        body.replaceChildren();
-        putText(body, 'p', button?.querySelector('span')?.textContent.trim() || 'This topic is unavailable right now.');
-        putText(body, 'p', 'The full education article could not be loaded.', 'help-text');
-    }
-}
+
+// WE SHOULDN'T NEED THIS IF WE ARE HARD CODING IN SUMMARIES AND HAVING A LINK TO AHA FOR THE USER TO READ MORE
+// It fetches the data provided from the database for each piece of educational content
+// async function goToTopic(name) {
+//     if (!Object.hasOwn(topicViews, name)) return;
+//     const version = ++topicViewVersion;
+//     learnGrid.hidden = true;
+//     for (const [key, panel] of Object.entries(topicViews)) panel.hidden = key !== name;
+//     window.scrollTo({top: 0, behavior: 'instant'});
+//     topicViews[name].querySelector('h2').focus();
+//     if (loadedTopics.has(name)) return;
+//     const body = topicViews[name].querySelector('.topic-body');
+//     body.replaceChildren(putText(document.createDocumentFragment(), 'p', 'Loading topic…'));
+//     try {
+//         const {data} = await requestJson(`/api/education.php?topic=${encodeURIComponent(name)}`);
+//         if (version !== topicViewVersion) return;
+//         body.replaceChildren();
+//         for (const paragraph of data.paragraphs) putText(body, 'p', paragraph);
+//         putLink(body, `Source: ${data.source_label}`, data.source_url);
+//         loadedTopics.add(name);
+//     } catch {
+//         if (version !== topicViewVersion) return;
+//         const button = topicButtons.find(item => item.dataset.topic === name);
+//         body.replaceChildren();
+//         putText(body, 'p', button?.querySelector('span')?.textContent.trim() || 'This topic is unavailable right now.');
+//         putText(body, 'p', 'The full education article could not be loaded.', 'help-text');
+//     }
+// }
+
+// Listens for a click to any of the card on the learn page
 topicButtons.forEach(button => button.addEventListener('click', () => { void goToTopic(button.dataset.topic); }));
+// Listens for a click of the back button
 document.querySelectorAll('.back-btn').forEach(button => button.addEventListener('click', () => {
     topicViewVersion++;
     Object.values(topicViews).forEach(panel => { panel.hidden = true; });
