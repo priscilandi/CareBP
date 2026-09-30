@@ -10,6 +10,12 @@ function publicLocation(array $row): array
     foreach (['location_id', 'type_id', 'offers_bp_screening'] as $key) {
         $row[$key] = (int) $row[$key];
     }
+    if (array_key_exists('distance_miles', $row)) {
+    $row['distance_miles'] = $row['distance_miles'] === null
+        ? null
+        : (float) $row['distance_miles'];   
+    }
+
     foreach (['latitude', 'longitude'] as $key) {
         $row[$key] = $row[$key] === null ? null : (float) $row[$key];
     }
@@ -40,6 +46,16 @@ runApi(static function (): never {
     if ($zip !== '' && preg_match('/^[0-9]{5}$/D', $zip) !== 1) {
         throw new ApiException(422, 'invalid_zip', 'ZIP code must contain exactly five digits.');
     }
+
+    $nearby = isset($_GET['nearby']) && $_GET['nearby'] === '1';
+    if ($nearby && $zip === '') {
+        throw new ApiException(
+            422,
+            'missing_zip',
+            'A ZIP code is required for nearby search.'
+        );
+    }
+
     $q = queryString('q', 100);
     $city = queryString('city', 80);
     $state = queryString('state', 2);
@@ -53,10 +69,37 @@ runApi(static function (): never {
 
     $where = ['l.is_active = 1', 'l.offers_bp_screening = 1'];
     $params = [];
-    if ($zip !== '') {
+
+    $searchLat = null;
+    $searchLon = null;
+
+    if ($nearby) {
+        $zipStmt = getDatabase()->prepare(
+            'SELECT latitude, longitude
+            FROM zip_codes
+            WHERE zip_code = :zip'
+        );
+        $zipStmt->execute(['zip' => $zip]);
+        $zipCoordinates = $zipStmt->fetch();
+        if (!$zipCoordinates) {
+            throw new ApiException(
+                404,
+                'zip_not_found',
+                'Nearby search is not available for this ZIP code.'
+            );
+        }
+
+        $searchLat = (float) $zipCoordinates['latitude'];
+        $searchLon = (float) $zipCoordinates['longitude'];
+
+        $where[] = 'l.latitude IS NOT NULL';
+        $where[] = 'l.longitude IS NOT NULL';
+
+    } elseif ($zip !== '') {
         $where[] = 'l.zip_code = :zip';
         $params['zip'] = $zip;
     }
+
     if ($q !== '') {
         $pattern = likePattern($q);
         $where[] = "(l.name LIKE :q_name ESCAPE '!' OR l.city LIKE :q_city ESCAPE '!'
@@ -84,8 +127,35 @@ runApi(static function (): never {
     $count->execute();
     $total = (int) $count->fetchColumn();
 
-    $stmt = $db->prepare('SELECT ' . $columns . $filteredFrom .
-        ' ORDER BY l.name ASC, l.location_id ASC LIMIT :limit OFFSET :offset');
+    if ($nearby) {
+
+        $distanceSql =
+            ', ROUND(
+                ST_Distance_Sphere(
+                    POINT(:search_lon, :search_lat),
+                    POINT(l.longitude, l.latitude)
+                ) / 1609.344,
+                2
+            ) AS distance_miles';
+
+        $stmt = $db->prepare(
+            'SELECT ' . $columns . $distanceSql . $filteredFrom .
+            ' ORDER BY distance_miles ASC, l.location_id ASC
+            LIMIT :limit OFFSET :offset'
+        );
+
+        $stmt->bindValue(':search_lat', $searchLat);
+        $stmt->bindValue(':search_lon', $searchLon);
+
+    } else {
+
+        $stmt = $db->prepare(
+            'SELECT ' . $columns . $filteredFrom .
+            ' ORDER BY l.name ASC, l.location_id ASC
+            LIMIT :limit OFFSET :offset'
+        );
+    }
+
     foreach ($params as $name => $value) {
         $stmt->bindValue(':' . $name, $value, $name === 'type_id' ? PDO::PARAM_INT : PDO::PARAM_STR);
     }

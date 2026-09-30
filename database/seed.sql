@@ -75,19 +75,29 @@ VALUES
 (8, 'Augusta Prep', '285 Flowing Wells Rd.', 'Augusta', 'GA', '30907', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL),
 (8, 'Bamberg Middle School', '897 North St.', 'Bamberg', 'SC', '29003', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL);
 
--- Not inserted: Phi Chi Chapter mobile screenings, DLAS vivarium-only equipment,
--- and the Early Headstart entry awaiting a fixed public location.
--- The sponsor spreadsheet is the source of truth for BP-monitor rollout.
+-- Sponsor-completed entries without a fixed public BP-monitor location are intentionally not inserted here:
+-- Phi Chi Chapter provides mobile/community BP screenings rather than a permanent public monitor location.
+-- DLAS BP-monitor equipment is housed internally in animal-research/vivarium facilities and is not a public screening location.
+-- The sponsor's Early Headstart in Burke County entry does not identify a specific fixed public BP-monitor location, so it remains pending clarification.
 
-INSERT INTO bp_categories (category_name, display_order) VALUES
+-- The sponsor spreadsheet remains the source of truth for BP-monitor rollout;
+-- external sources should only be used to complete missing location details.
+
+-- BP CATEGORIES
+
+INSERT INTO bp_categories (category_name, display_order)
+VALUES
 ('Normal', 1),
 ('Elevated', 2),
 ('Stage 1 Hypertension', 3),
 ('Stage 2 Hypertension', 4);
 
--- DEMONSTRATION PLACEHOLDERS ONLY. Never use as clinical guidance.
+
+-- RECOMMENDATIONS
+
 INSERT INTO recommendations
-(category_id, type_id, guidance_text, care_level, approved) VALUES
+(category_id, type_id, guidance_text, care_level, approved)
+VALUES
 (1, NULL, 'Demo guidance for normal blood pressure.', 'Routine', 1),
 (2, 3, 'Demo guidance for elevated blood pressure.', 'Routine', 1),
 (3, 4, 'Demo guidance for Stage 1 hypertension.', 'Follow-up', 1),
