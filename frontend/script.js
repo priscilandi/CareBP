@@ -295,31 +295,51 @@ function renderCard(location) {
 // Show the embedded OpenStreetMap iframe if there is at least one result with valid coordinates
 function renderMap(rows) {
     const mapContainer = $('map-container');
+
+    // Removes any existing map before adding a new one
+    if (careMap) {
+        careMap.remove();
+        careMap = null;
+    }
     mapContainer.replaceChildren();
+
     const withCoordinates = rows.filter(row => Number.isFinite(row.latitude) && Number.isFinite(row.longitude)
         && Math.abs(row.latitude) <= 90 && Math.abs(row.longitude) <= 180);
     if (!withCoordinates.length) {
         putText(mapContainer, 'p', 'A map preview is unavailable for these entries because the supplied database has no coordinates. Use “View on map” on any location card to search its address.');
         return;
     }
-    const first = withCoordinates[0];
-    const lat = first.latitude;
-    const lng = first.longitude;
-    const delta = 0.025;
-    const params = new URLSearchParams({
-        bbox: `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`,
-        layer: 'mapnik', marker: `${lat},${lng}`,
-    });
-    const frame = document.createElement('iframe');
-    // Doesn't load the map until it's needed
-    frame.loading = 'lazy';     
-    // Prevents the site's URL from being passed to the OpenStreetMap's servers
-    frame.referrerPolicy = 'no-referrer';
-    // Provides an accessible name for screen readers to read from
-    frame.title = `Map preview of ${first.name}`;
-    frame.src = `https://www.openstreetmap.org/export/embed.html?${params}`;
-    mapContainer.append(frame);
-    putText(mapContainer, 'p', `Map preview shows ${first.name}. Other results have individual map links.`, 'help-text');
+
+    const mapDiv = document.createElement('div');
+    mapDiv.id = 'care-map';
+    mapDiv.setAttribute('role', 'img');
+    mapDiv.setAttribute('aria-label', `Map showing ${withCoordinates.length} location${withCoordinates.length === 1 ? '' : 's'}`);
+    mapContainer.append(mapDiv);
+
+    careMap = L.map('care-map', {scrollWheelZoom: false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        subdomains: 'abc',
+        maxZoom: 19,
+    }).addTo(careMap);
+
+    const markers = withCoordinates.map(row => 
+        L.marker([row.latitude, row.longitude]).bindPopup(`<strong>${row.name}</strong>${row.address ? `<br>${row.address}` : ''}`)
+    );
+
+    const group = L.featureGroup(markers).addTo(careMap);
+    careMap.fitBounds(group.getBounds().pad(0.15));
+}
+
+// Temporary: manually-looked-up coordinates until the backend stores them.
+const MANUAL_COORDINATES = {
+    12: { latitude: 33.4735, longitude: -82.0105 }, // match by facility id
+    13: { latitude: 33.4701, longitude: -81.9622 },
+    // ...
+};
+
+function withCoordinates(rows) {
+    return rows.map(row => ({ ...row, ...MANUAL_COORDINATES[row.id] }));
 }
 
 // Gets each location types and populates the lsit of locations found in the ZIP code aread
@@ -371,7 +391,7 @@ async function loadLocations(page = 1) {
             ? 'No listed locations match this search. Try another ZIP code or clear a filter.'
             : `${meta.total} matching location${meta.total === 1 ? '' : 's'}${zip ? ` for ZIP ${zip}` : ''}. Showing page ${meta.page} of ${meta.total_pages}.`;
         rows.forEach(location => list.append(renderCard(location)));
-        renderMap(rows);
+        renderMap(withCoordinates(rows));
 
         // Only display the pagination controls if there's more than one page of results
         if (meta.total_pages > 1) {

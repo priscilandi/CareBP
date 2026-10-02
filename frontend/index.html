@@ -5,19 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="CareBP: learn about blood pressure and search community screening locations by ZIP code.">
         <title>CareBP: Community Access, Resources, and Education for Blood Pressure</title>
- 
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
         <a class="skip-link" href="#main-content">Skip to main content</a>
         
         <header class="site-header">
-            <div class="branding">
-                ❤️
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#123F3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-9.5-9.2C1 8.4 2.6 5 6 5c2 0 3.3 1.1 4 2 .7-.9 2-2 4-2 3.4 0 5 3.4 3.5 6.8C19 16.4 12 21 12 21z"/><path d="M4 12h3l1.5-3 2 6 1.5-4h4"/></svg>
+                </span>                
                 CareBP
             </div>
             <span class="location-chip">
-                📍
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5S16.4 3 12 3 5 5 5 9.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
                 Screening locations
             </span>
         </header>
@@ -97,28 +102,29 @@
                     <!-- BP range options -->
                     <div class="step-block">
                         <h2 class="step-label">Select your blood pressure range</h2>
-                        <p class="help-text">Adult ranges, not for pregnancy. Choose the higher category if your upper and lower readings differ. If a reading is above 180 systolic or 120 diastolic, repeat after a minute and contact your clinician immediately if it stays that high; call 911 if you also have emergency symptoms.</p>
+                        <p class="help-text">Shown as systolic / diastolic (mmHg). Adult ranges, not for pregnancy. Choose the higher category if your upper and lower readings differ. 
+                            If a reading is above 180 systolic or 120 diastolic, repeat after a minute and contact your clinician immediately if it stays that high call 911.</p>
                         <button type="button" class="bp-range-btn" data-bprange="normal" aria-pressed="false">
                             <span>
-                                Below 120 AND below 80
+                                &lt;120 / &lt;80
                                 <span class="range-option-label">Normal</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" data-bprange="elevated" aria-pressed="false">
                             <span>
-                                120–129 AND &lt;80 
+                                120–129 / &lt;80 
                                 <span class="range-option-label">Elevated</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" data-bprange="high" aria-pressed="false">
                             <span>
-                                130–139 OR 80–89
+                                130–139 or 80–89
                                 <span class="range-option-label">High, Stage 1</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" data-bprange="veryhigh" aria-pressed="false">
                             <span>
-                                140+ OR 90+
+                                140+ or 90+
                                 <span class="range-option-label">High, Stage 2</span>
                             </span>
                         </button>
@@ -260,82 +266,6 @@
                         </span>
                     </div>
                 </div>
-
-                
-                <!-- Shouldn't need the code below if summaries are static. Need to ask group -->
-                <div id="topic-managing-bp" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">What is high blood pressure?</h2>
-                    <div class="topic-body" id="load-manage" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-blood-pressure" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">What is high blood pressure?</h2>
-                    <div class="topic-body" id="load-blood-pressure" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-numbers-mean" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">What do the numbers mean?</h2>
-                    <div class="topic-body" id="load-number-means" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-risk" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">Risk of high blood pressure</h2>
-                    <div class="topic-body" id="load-risk" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-check-home" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">How can you check at home?</h2>
-                    <div class="topic-body" id="load-check-home" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-pregnancy" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">Pregnancy and blood pressure</h2>
-                    <div class="topic-body" id="load-pregnancy" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-midlife-and-menopause" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">Midlife and menopause changes</h2>
-                    <div class="topic-body" id="load-midlife-and-menopause" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-
-                <div id="topic-talk-to-provider" hidden>
-                    <button type="button" class="back-btn">Back to topics</button>
-                    <h2 tabindex="-1">Talking to your provider</h2>
-                    <div class="topic-body" id="load-talk-to-provider" aria-live="polite">
-                        <!-- Static education content is served by /api/education.php. -->
-                        <p>Loading educational information…</p>
-                    </div>
-                </div>
-                <!-- End of dead code -->
-
             </section>
 
 
@@ -364,6 +294,9 @@
 
                 <div id="map-container" role="region" aria-label="Location map">
                     <p>Maps are available for locations with coordinates; every listing includes a map-search link.</p>
+                    <div id="care-map">
+
+                    </div>
                 </div>
                 
                 <p class="help-text">These are sponsor-listed BP-monitor locations. A listing does not establish walk-in access, current availability, hours, or cost. Call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.</p>
@@ -426,19 +359,19 @@
         <nav class="tab-bar" aria-label="Main">
             <!-- Bottom navigation -->
             <button type="button" class="tab-btn" data-tab="home" aria-current="page">
-                🏠
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
                 Home
             </button>
             <button type="button" class="tab-btn" data-tab="learn">
-                📚
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
                 Learn
             </button>
             <button type="button" class="tab-btn" data-tab="findcare">
-                🏥
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5S16.4 3 12 3 5 5 5 9.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
                 Find Care
             </button>
             <button type="button" class="tab-btn" data-tab="about">
-                💡
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
                 About
             </button>
         </nav>
