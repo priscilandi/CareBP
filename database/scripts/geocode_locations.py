@@ -13,15 +13,16 @@ DB_CONFIG = {
 }
 
 CENSUS_URL = "https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress"
-
+GEOCODER_BENCHMARK = "Public_AR_Current"
+GEOCODER_VINTAGE = "Current_Current"
 
 def geocode_address(address, city, state, zip_code):
     full_address = f"{address}, {city}, {state} {zip_code}"
 
     params = urllib.parse.urlencode({
         "address": full_address,
-        "benchmark": "Public_AR_Current",
-        "vintage": "Current_Current",
+        "benchmark": GEOCODER_BENCHMARK,
+        "vintage": GEOCODER_VINTAGE,
         "format": "json",
     })
 
@@ -69,6 +70,10 @@ def main():
 
     locations = cursor.fetchall()
 
+    updated_count = 0
+    skipped_count = 0
+    error_count = 0
+
     print(f"Found {len(locations)} locations without coordinates.\n")
 
     for location in locations:
@@ -91,6 +96,7 @@ def main():
             )
 
             if coordinates is None:
+                skipped_count += 1
                 print("  No match found. Skipping.\n")
                 continue
 
@@ -111,10 +117,11 @@ def main():
             ))
 
             connection.commit()
-
+            updated_count += 1
             print("  Database updated.\n")
 
         except Exception as error:
+            error_count += 1
             print(f"  Error: {error}\n")
 
         time.sleep(0.25)
@@ -122,7 +129,11 @@ def main():
     cursor.close()
     connection.close()
 
+
     print("Geocoding complete.")
+    print(f"Updated: {updated_count}")
+    print(f"No match: {skipped_count}")
+    print(f"Errors: {error_count}")
 
 
 if __name__ == "__main__":
