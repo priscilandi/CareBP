@@ -6,6 +6,8 @@ The supplied `database/seed.sql` contains **9 location types, 39 sponsor-supplie
 
 > **Safety and data handling:** This is an educational prototype, not a diagnosis, an emergency-response service, or a continuously verified facility directory. Do not deploy it publicly until the sponsor confirms current location and medical content. The supplied admin pages and authorization/audit includes are empty placeholders; there is no usable admin login or editing workflow.
 
+> **macOS:** the full Apache setup in Section 5 uses Debian/Ubuntu-only tools (`apt`, `a2ensite`, `systemctl`). macOS-specific commands are called out inline below wherever they differ, and **Section 6 (PHP development server) is the recommended path for local development on a Mac** - it uses the same database and API without needing Apache configuration at all.
+
 ## 1. Project layout
 
 ```text
@@ -28,6 +30,8 @@ CareBP-main/
 
 ## 2. Install the LAMP components
 
+### Debian or Ubuntu
+
 On **Debian or Ubuntu**, install Apache, **MySQL Server 8+**, PHP, and PHP's MySQL PDO extension:
 
 ```bash
@@ -41,6 +45,18 @@ sudo apache2ctl configtest      # Expected: Syntax OK
 
 This setup uses MySQL throughout. If using PHP-FPM rather than `libapache2-mod-php`, configure Apache's PHP-FPM handler separately. If the `pdo_mysql` check is empty, database-backed endpoints will fail even if MySQL is running.
 
+### macOS (Homebrew)
+
+```bash
+# Install Homebrew first if you don't have it: https://brew.sh
+brew install php mysql
+brew services start mysql
+php -v                          # Requires PHP 8.1 or later
+php -m | grep -i pdo_mysql      # Must show pdo_mysql
+```
+
+Wiring Homebrew's PHP into Apache on macOS (`mod_php` vs. PHP-FPM, with config paths that vary by Homebrew version and chip architecture) is inconsistent enough across setups that this project hasn't tested it directly — everyone who's run CareBP on a Mac has used either this dev server or a Linux VM (e.g. Multipass) instead. **For local development on macOS, skip Section 5 (Apache) and use Section 6 (PHP development server) instead** — same database, same API, no Apache config needed. If you want full Apache, running the Debian/Ubuntu instructions in Sections 2 and 5 inside a Linux VM (Multipass, UTM, etc.) is the better-tested route than wiring up Apache directly via Homebrew.
+
 ## 3. Create and seed a **development** database
 
 From the project root (the directory containing `backend`, `frontend`, and `database`), open the administrative SQL shell:
@@ -48,6 +64,8 @@ From the project root (the directory containing `backend`, `frontend`, and `data
 ```bash
 sudo mysql
 ```
+
+> **macOS note:** Homebrew's MySQL doesn't use Linux's socket-based root authentication, so `sudo mysql` won't work the same way. Instead run `mysql -u root` (no `sudo`; add `-p` if you set a root password).
 
 Run this SQL, replacing the password with your own strong local password:
 
@@ -67,6 +85,8 @@ sudo mysql carebp < database/schema.sql
 sudo mysql carebp < database/seed.sql
 ```
 
+> **macOS:** drop `sudo` — `mysql carebp < database/schema.sql` and `mysql carebp < database/seed.sql` (add `-u root -p` if required, matching however you connected in step 3 above).
+
 **Important: `seed.sql` resets data.** It deletes existing recommendations, locations, categories, and types (in foreign-key-safe order), resets their AUTO_INCREMENT counters, then inserts the supplied development dataset. You may re-run it on a *dedicated development database*, but **never run it against production or independently maintained data**. `schema.sql` is intended for an empty database; it is not a migration.
 
 Verify the import:
@@ -78,6 +98,8 @@ sudo mysql carebp < database/zip_search.sql
 # ZIP 30904: Reese Library, Good Shepherd Baptist Church, The HUB Augusta Locally Grown
 python3 tests/test_seed.py  # Real MySQL read-only checks; requires configured .env
 ```
+
+(macOS: drop `sudo` from the `mysql` commands above, as noted earlier.)
 
 The developer seed omits mobile-only or nonpublic BP-monitor entries described in its SQL comments. It also leaves unknown coordinates, hours, phone numbers, and last-verification timestamps as `NULL`.
 
@@ -109,7 +131,11 @@ sudo chown "$USER":www-data .env
 sudo chmod 640 .env
 ```
 
+> **macOS note:** there's no `www-data` group on macOS by default. If you're using the PHP development server (Section 6), it runs as your own user account, so you can skip the `chown`/`chmod` steps above entirely — just make sure the file isn't world-readable (`chmod 600 .env` is fine). If you do set up Apache on macOS, substitute whatever user/group Homebrew's `httpd` runs as (check the `User`/`Group` directives in `httpd.conf` — it's often your own username) wherever this guide says `www-data`.
+
 ## 5. Run the full website on Apache
+
+> **macOS note:** the commands in this section (`apt`, `a2ensite`, `a2dissite`, `/etc/apache2/...`, `systemctl`) are Debian/Ubuntu-specific and have no direct equivalent on macOS, and wiring Homebrew's PHP into Apache isn't something this project has tested. The better-tested options on macOS are the PHP development server in **Section 6**, or running Sections 2–5 as written inside a Linux VM (e.g. Multipass) — which is how this project has actually been run on a Mac.
 
 For this example the deployment path is `/var/www/carebp`. Copy the **whole project** so the PHP API can access private configuration; Apache will expose only `frontend/` and the allowed `backend/api/` scripts.
 
@@ -125,7 +151,7 @@ sudo apache2ctl configtest       # Expected: Syntax OK
 sudo systemctl reload apache2
 ```
 
-The sample virtual host uses `ServerName carebp.local` and port **80**, for **local development only**. Add `127.0.0.1 carebp.local` to your computer's hosts file, then open **http://carebp.local/**. If installing elsewhere, update *both* `/var/www/carebp` paths in `apache/carebp.conf`. If Apache's default site intercepts the hostname, disable the default site with `sudo a2dissite 000-default.conf` and reload Apache.
+The sample virtual host uses `ServerName carebp.local` and port **80**, for **local development only**. Add `127.0.0.1 carebp.local` to your computer's hosts file (`/etc/hosts` on both Linux and macOS), then open **http://carebp.local/**. If installing elsewhere, update *both* `/var/www/carebp` paths in `apache/carebp.conf`. If Apache's default site intercepts the hostname, disable the default site with `sudo a2dissite 000-default.conf` and reload Apache.
 
 For any publicly accessible installation, configure a real domain, HTTPS/TLS, access logs, and current sponsor/clinical verification. Do not set `DocumentRoot` to the project root; that would risk exposing `.env`, SQL files, and backend internals.
 
@@ -140,7 +166,9 @@ curl -s 'http://carebp.local/api/facilities.php?zip=30904'
 
 ## 6. Quicker local alternative: PHP development server
 
-This uses exactly the same MySQL database and API, but skips Apache while developing. It is **not suitable for public hosting**:
+This uses exactly the same MySQL database and API, but skips Apache while developing. It is **not suitable for public hosting**.
+
+> **Recommended for macOS.** This is the simplest, most reliable way to run CareBP locally on a Mac — it avoids the Apache/PHP wiring on bare macOS that this project hasn't tested (see the note in Section 2).
 
 ```bash
 php -S 127.0.0.1:8000 -t frontend backend/router.php
@@ -159,7 +187,7 @@ find backend -name '*.php' -print0 | xargs -0 -n1 php -l
 node --check frontend/script.js
 ```
 
-**B. Real MySQL seed checks**: After importing `schema.sql` and `seed.sql` into a dedicated development MySQL database and configuring `.env`, run `python3 tests/test_seed.py`. This test calls the `mysql` command-line client to verify seeded counts, reference integrity, screening flags, and known ZIP/name results. It does not modify database records or rerun the destructive development seed. The MySQL client must be installed and available on PATH.
+**B. Real MySQL seed checks**: After importing `schema.sql` and `seed.sql` into a dedicated development MySQL database and configuring `.env`, run `python3 tests/test_seed.py`. This test calls the `mysql` command-line client to verify seeded counts, reference integrity, screening flags, and known ZIP/name results. It does not modify database records or rerun the destructive development seed. The MySQL client must be installed and available on PATH (on macOS, `brew install mysql` from Section 2 already puts it there).
 
 **C. Real HTTP + MySQL integration**: Start Apache or the PHP dev server, confirm `/api/health.php` says `database: connected`, then run:
 
@@ -188,7 +216,7 @@ python3 tests/test_frontend.py --mock
 python3 tests/test_frontend.py --live --base-url http://127.0.0.1:8000
 ```
 
-Add `--chromium-path /usr/bin/chromium` if using system Chromium; adjust it for your environment or the browser Playwright installed. `--mock` loads the project's real HTML/JavaScript **in memory** and simulates API replies based on three supplied seed locations: it needs no server or database. `--live` loads the actual website, queries PHP/MySQL, and expects the full 39-location seed. Both modes exercise Home, Learn, Find Care, ZIP validation, type/name filters, and suppression of the placeholder demo recommendations.
+Add `--chromium-path /usr/bin/chromium` if using system Chromium, or point it at Playwright's own install path (e.g. the path printed by `python3 -m playwright install chromium` — this applies the same way on macOS). `--mock` loads the project's real HTML/JavaScript **in memory** and simulates API replies based on three supplied seed locations: it needs no server or database. `--live` loads the actual website, queries PHP/MySQL, and expects the full 39-location seed. Both modes exercise Home, Learn, Find Care, ZIP validation, type/name filters, and suppression of the placeholder demo recommendations.
 
 **Manual check:** Open Home, select **Yes**, choose a BP range and timeframe, and confirm a range explanation appears while demo recommendations are not displayed as advice. In Learn, open “What do the numbers mean?”. In Find Care, search `30904` and confirm the three named locations and map links; selecting **Church** should leave only Good Shepherd Baptist Church. The seed has no coordinates, so a map preview is expected to be unavailable; each result still links to an address search.
 
@@ -207,8 +235,9 @@ All public endpoints are read-only. Invalid ZIPs return HTTP **422**; unknown pu
 
 ## 9. Troubleshooting and implementation limits
 
-- **503 `database_unavailable`:** Start MySQL, check the `.env` credentials/host, and confirm `pdo_mysql` is installed in the **same PHP runtime Apache uses**.
+- **503 `database_unavailable`:** Start MySQL (`sudo systemctl start mysql` on Linux, `brew services start mysql` on macOS), check the `.env` credentials/host, and confirm `pdo_mysql` is installed in the **same PHP runtime** you're running the server with.
 - **500 `database_error`:** Confirm the schema and seed were imported into `carebp`, all four tables exist, and `carebp` has SELECT privileges.
+- **macOS: `a2ensite`/`a2dissite`/`systemctl` not found:** these are Debian/Ubuntu helper scripts with no macOS equivalent. Use the PHP development server (Section 6) for local development, or edit Homebrew's `httpd.conf` directly (with an `Include` line and `brew services restart httpd`) if you need to test under Apache specifically.
 - **404 on API routes in Apache:** Confirm the `Alias /api/` entry, PHP handler, and virtual-host activation. Verify `DocumentRoot` remains `frontend/`.
 - **Empty or incorrect Find Care:** Reimport only in a dedicated development database. Seeded ZIP `30904` has exactly three locations. Rerunning `seed.sql` deletes all records in the four seeded tables first.
 - **The map preview is blank:** This is expected; latitude and longitude are `NULL` in the supplied seed. Use the “View on map” link.
