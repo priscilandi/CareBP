@@ -249,6 +249,7 @@ const searchStatus = $('care-search-status');
 const pagination = $('care-pagination');
 let currentPage = 1;
 let requestVersion = 0;
+let careMap = null;
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -277,6 +278,11 @@ function renderCard(location) {
     putText(card, 'h3', location.name);
     const address = [location.address, location.city, location.state, location.zip_code].filter(Boolean).join(', ');
     putText(card, 'p', address, 'care-address');
+
+    if (Number.isFinite(location.distance_miles)) {
+    putText(card, 'p', `${location.distance_miles.toFixed(2)} miles away`, 'care-distance');
+    }
+    
     putText(card, 'p', location.hours ? `Hours: ${location.hours}` : 'Hours not provided — call ahead.', 'care-hours');
     const actions = document.createElement('div');
     actions.className = 'care-actions';
@@ -376,7 +382,10 @@ async function loadLocations(page = 1) {
 
     // Builds a query string in order to handle things like spaces and special characters correctly instead of concatenating by hand
     const params = new URLSearchParams({page: String(page), per_page: '9'});
-    if (zip) params.set('zip', zip);
+    if (zip) {
+        params.set('zip', zip);
+        params.set('nearby', '1');
+    }
     if (typeFilter.value) params.set('type_id', typeFilter.value);
     if (nameFilter.value.trim()) params.set('q', nameFilter.value.trim());
 
@@ -389,7 +398,7 @@ async function loadLocations(page = 1) {
         // Build a string to describe the results of the search
         searchStatus.textContent = meta.total === 0
             ? 'No listed locations match this search. Try another ZIP code or clear a filter.'
-            : `${meta.total} matching location${meta.total === 1 ? '' : 's'}${zip ? ` for ZIP ${zip}` : ''}. Showing page ${meta.page} of ${meta.total_pages}.`;
+            : `${meta.total} matching location${meta.total === 1 ? '' : 's'}${zip ? ` near ZIP ${zip}` : ''}. Showing page ${meta.page} of ${meta.total_pages}.`;
         rows.forEach(location => list.append(renderCard(location)));
         renderMap(withCoordinates(rows));
 
