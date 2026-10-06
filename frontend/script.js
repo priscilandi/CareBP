@@ -316,11 +316,17 @@ function renderMap(rows) {
         return;
     }
 
-    const mapDiv = document.createElement('div');
-    mapDiv.id = 'care-map';
-    mapDiv.setAttribute('role', 'img');
-    mapDiv.setAttribute('aria-label', `Map showing ${withCoordinates.length} location${withCoordinates.length === 1 ? '' : 's'}`);
-    mapContainer.append(mapDiv);
+    // Ethans attempt to get the map working
+    // const withCoordinates = rows
+    // .map(row => ({...row, latitude: parseFloat(row.latitude), longitude: parseFloat(row.longitude)}))
+    // .filter(row => Number.isFinite(row.latitude) && Number.isFinite(row.longitude)
+    //     && Math.abs(row.latitude) <= 90 && Math.abs(row.longitude) <= 180);
+
+    // const mapDiv = document.createElement('div');
+    // mapDiv.id = 'care-map';
+    // mapDiv.setAttribute('role', 'img');
+    // mapDiv.setAttribute('aria-label', `Map showing ${withCoordinates.length} location${withCoordinates.length === 1 ? '' : 's'}`);
+    // mapContainer.append(mapDiv);
 
     careMap = L.map('care-map', {scrollWheelZoom: false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -333,8 +339,20 @@ function renderMap(rows) {
         L.marker([row.latitude, row.longitude]).bindPopup(`<strong>${row.name}</strong>${row.address ? `<br>${row.address}` : ''}`)
     );
 
-    const group = L.featureGroup(markers).addTo(careMap);
-    careMap.fitBounds(group.getBounds().pad(0.15));
+    // Ethan's attempt to get the map working
+    // const markers = withCoordinates.map(row => {
+    // const popup = document.createElement('div');
+    // const name = document.createElement('strong');
+    // name.textContent = row.name;
+    // popup.append(name);
+    // if (row.address) {
+    //     popup.append(document.createElement('br'), row.address);
+    // }
+    // return L.marker([row.latitude, row.longitude]).bindPopup(popup);
+    // });
+
+    // const group = L.featureGroup(markers).addTo(careMap);
+    // careMap.fitBounds(group.getBounds().pad(0.15));
 }
 
 // Temporary: manually-looked-up coordinates until the backend stores them.
