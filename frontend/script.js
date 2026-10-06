@@ -19,6 +19,14 @@ function goToTab(name) {
     }
     // Scroll to the top of the page when a new tab is clicked
     window.scrollTo({top: 0, behavior: 'instant'});
+
+    // If the user is on the Find Care tab and there is a map, then it will resize the map to fit the current markers
+    if (name === 'findcare' && careMap) {
+        careMap.invalidateSize();
+        if (careMarkers) {
+            careMap.fitBounds(careMarkers.getBounds().pad(0.15));
+        }
+    }
 }
 
 
@@ -250,6 +258,7 @@ const pagination = $('care-pagination');
 let currentPage = 1;
 let requestVersion = 0;
 let careMap = null;
+let careMarkers = null;
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -306,27 +315,27 @@ function renderMap(rows) {
     if (careMap) {
         careMap.remove();
         careMap = null;
+        careMarkers = null;
     }
     mapContainer.replaceChildren();
 
-    const withCoordinates = rows.filter(row => Number.isFinite(row.latitude) && Number.isFinite(row.longitude)
+    // Ethans attempt to get the map working
+    const withCoordinates = rows
+    .map(row => ({...row, latitude: parseFloat(row.latitude), longitude: parseFloat(row.longitude)}))
+    .filter(row => Number.isFinite(row.latitude) && Number.isFinite(row.longitude)
         && Math.abs(row.latitude) <= 90 && Math.abs(row.longitude) <= 180);
+
+
     if (!withCoordinates.length) {
         putText(mapContainer, 'p', 'A map preview is unavailable for these entries because the supplied database has no coordinates. Use “View on map” on any location card to search its address.');
         return;
     }
 
-    // Ethans attempt to get the map working
-    // const withCoordinates = rows
-    // .map(row => ({...row, latitude: parseFloat(row.latitude), longitude: parseFloat(row.longitude)}))
-    // .filter(row => Number.isFinite(row.latitude) && Number.isFinite(row.longitude)
-    //     && Math.abs(row.latitude) <= 90 && Math.abs(row.longitude) <= 180);
-
-    // const mapDiv = document.createElement('div');
-    // mapDiv.id = 'care-map';
-    // mapDiv.setAttribute('role', 'img');
-    // mapDiv.setAttribute('aria-label', `Map showing ${withCoordinates.length} location${withCoordinates.length === 1 ? '' : 's'}`);
-    // mapContainer.append(mapDiv);
+    const mapDiv = document.createElement('div');
+    mapDiv.id = 'care-map';
+    mapDiv.setAttribute('role', 'img');
+    mapDiv.setAttribute('aria-label', `Map showing ${withCoordinates.length} location${withCoordinates.length === 1 ? '' : 's'}`);
+    mapContainer.append(mapDiv);
 
     careMap = L.map('care-map', {scrollWheelZoom: false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -335,24 +344,20 @@ function renderMap(rows) {
         maxZoom: 19,
     }).addTo(careMap);
 
-    const markers = withCoordinates.map(row => 
-        L.marker([row.latitude, row.longitude]).bindPopup(`<strong>${row.name}</strong>${row.address ? `<br>${row.address}` : ''}`)
-    );
-
     // Ethan's attempt to get the map working
-    // const markers = withCoordinates.map(row => {
-    // const popup = document.createElement('div');
-    // const name = document.createElement('strong');
-    // name.textContent = row.name;
-    // popup.append(name);
-    // if (row.address) {
-    //     popup.append(document.createElement('br'), row.address);
-    // }
-    // return L.marker([row.latitude, row.longitude]).bindPopup(popup);
-    // });
+    const markers = withCoordinates.map(row => {
+        const popup = document.createElement('div');
+        const name = document.createElement('strong');
+        name.textContent = row.name;
+        popup.append(name);
+        if (row.address) {
+            popup.append(document.createElement('br'), row.address);
+        }
+        return L.marker([row.latitude, row.longitude]).bindPopup(popup);
+    });
 
-    // const group = L.featureGroup(markers).addTo(careMap);
-    // careMap.fitBounds(group.getBounds().pad(0.15));
+    careMarkers = L.featureGroup(markers).addTo(careMap);
+    careMap.fitBounds(careMarkers.getBounds().pad(0.15));
 }
 
 // Temporary: manually-looked-up coordinates until the backend stores them.
@@ -362,7 +367,7 @@ const MANUAL_COORDINATES = {
     // ...
 };
 
-function withCoordinates(rows) {
+function applyManualCoordinates(rows) {
     return rows.map(row => ({ ...row, ...MANUAL_COORDINATES[row.id] }));
 }
 
@@ -418,7 +423,7 @@ async function loadLocations(page = 1) {
             ? 'No listed locations match this search. Try another ZIP code or clear a filter.'
             : `${meta.total} matching location${meta.total === 1 ? '' : 's'}${zip ? ` near ZIP ${zip}` : ''}. Showing page ${meta.page} of ${meta.total_pages}.`;
         rows.forEach(location => list.append(renderCard(location)));
-        renderMap(withCoordinates(rows));
+        renderMap(applyManualCoordinates(rows));
 
         // Only display the pagination controls if there's more than one page of results
         if (meta.total_pages > 1) {
