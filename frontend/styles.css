@@ -181,6 +181,8 @@ h3 { font-size: 1.08rem; }
     .care-filters { grid-template-columns: 1fr; gap: 8px; }
     .care-filters label { margin-top: 8px; }
     .tab-btn { min-width: 0; flex: 1; font-size: .78rem; padding: 11px 4px; }
+    .site-header { flex-wrap: wrap; }
+    .location-chip { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 /* End of AI Generation - Modified by Ethan */
