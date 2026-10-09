@@ -37,6 +37,27 @@
             <span data-i18n="disclaimer.text">CareBP doesn't diagnose or treat medical conditions. Always consult a healthcare professional for medical advice.</span>
             <a href="#" data-goto="about" data-i18n="disclaimer.link">Learn more</a>
         </div>
+        
+        <!-- Navigation for tab switching -->
+        <nav class="tab-bar" aria-label="Main">
+            <!-- Bottom navigation -->
+            <button type="button" class="tab-btn" data-tab="home" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+                <span data-i18n="nav.home">Home</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="learn">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                <span data-i18n="nav.learn">Learn</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="findcare">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5S16.4 3 12 3 5 5 5 9.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                <span data-i18n="nav.findcare">Screening</span>
+            </button>
+            <button type="button" class="tab-btn" data-tab="about">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+                <span data-i18n="nav.about">About</span>
+            </button>
+        </nav>
 
         <main id="main-content">
             <!-- Home Tab -->
@@ -86,11 +107,11 @@
                         </button>
                     </div>
 
-                    <!-- Quicklinks to either find care or learn more. Doesn't have machine -->
+                    <!-- Quicklinks to either find screening locations or learn more. Doesn't have machine -->
                     <div class = "step-block" id="Screening-Locations/Resources" hidden>
                         <button type="button" class="quicklink" data-goto="findcare">
                             <span class="quicklink-content">
-                                <h3 data-i18n="home.home-step-2-find-care">Find care near you</h3>
+                                <h3 data-i18n="home.home-step-2-find-care">Find screening locations near you</h3>
                                 <p data-i18n="home.home-step-2-find-care-description">Locations listed as offering BP screening; call ahead to confirm access and fees</p>
                             </span>
                         </button>
@@ -109,47 +130,41 @@
                         <h2 class="step-label" data-i18n="home.home-step-2-select-bp-range">Select your blood pressure range</h2>
                         <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">Shown as systolic / diastolic (mmHg). Adult ranges, not for pregnancy. Choose the higher category if your upper and lower readings differ. 
                             If a reading is above 180 systolic or 120 diastolic, repeat after a minute. If it stays that high, contact your clinician immediately or call 911.</p>
-                        <button type="button" class="bp-range-btn" data-bprange="normal" aria-pressed="false">
+                        <button type="button" class="bp-range-btn" id="bp-range-normal" data-bprange="normal" aria-pressed="false">
                             <span>
                                 &lt;120 / &lt;80
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-normal">Normal</span>
                             </span>
                         </button>
-                        <button type="button" class="bp-range-btn" data-bprange="elevated" aria-pressed="false">
+                        <button type="button" class="bp-range-btn" id="bp-range-elevated" data-bprange="elevated" aria-pressed="false">
                             <span>
                                 120–129 / &lt;80 
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-elevated">Elevated</span>
                             </span>
                         </button>
-                        <button type="button" class="bp-range-btn" data-bprange="high" aria-pressed="false">
+                        <button type="button" class="bp-range-btn" id="bp-range-high" data-bprange="high" aria-pressed="false">
                             <span>
                                 130–139 or 80–89
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-high">High, Stage 1</span>
                             </span>
                         </button>
-                        <button type="button" class="bp-range-btn" data-bprange="veryhigh" aria-pressed="false">
+                        <button type="button" class="bp-range-btn" id="bp-range-veryhigh" data-bprange="veryhigh" aria-pressed="false">
                             <span>
                                 140+ or 90+
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-veryhigh">High, Stage 2</span>
                             </span>
                         </button>
+                        <button type="button" class="bp-range-btn" id="bp-range-crisis" data-bprange="crisis" aria-pressed="false">
+                            <span>
+                                180+ or 120+
+                                <span class="range-option-label" data-i18n="home.home-step-2-range-crisis">Hypertensive Crisis</span>
+                            </span>
+                        </button>
                     </div>
 
-                    <!-- Time since last screening (TSLS) -->
-                    <div class="step-block" id="TSLS" hidden>
-                        <h2 data-i18n="home.home-step-2-tsls">How long since this screening?</h2>
-                        <button type="button" class="bp-time-btn" data-bptime="within3months" aria-pressed="false" data-i18n="home.home-step-2-tsls-within3months">
-                            Within the last 3 months
-                        </button>
-                        <button type="button" class="bp-time-btn" data-bptime="3to12months" aria-pressed="false" data-i18n="home.home-step-2-tsls-3to12months">
-                            3 to 12 months ago
-                        </button>
-                        <button type="button" class="bp-time-btn" data-bptime="over12months" aria-pressed="false" data-i18n="home.home-step-2-tsls-over12months">
-                            Over 12 months ago 
-                        </button>
-                        <button type="button" class="bp-time-btn" data-bptime="unknown" aria-pressed="false" data-i18n="home.home-step-2-tsls-unknown">
-                            Not sure
-                        </button>
+                    <!-- Recommendations for Blood Pressure Range - Populated by database -->
+                    <div class="rec-panel" id="range-recommendations" aria-live="polite" hidden>
+                        
                     </div>
 
                     <!-- Next steps -->
@@ -161,7 +176,7 @@
                         </p>
                         <button type="button" class="quicklink" data-goto="findcare">
                             <span class="quicklink-content">
-                                <h3 data-i18n="home.home-step-2-nextsteps-findcare">Find care near you</h3>
+                                <h3 data-i18n="home.home-step-2-nextsteps-findcare">Find screening locations near you</h3>
                                 <p data-i18n="home.home-step-2-nextsteps-findcare-description">Locations listed as offering BP screening; call ahead to confirm access and fees</p>
                             </span>
                         </button>
@@ -171,11 +186,6 @@
                                 <p data-i18n="home.home-step-2-nextsteps-learn-description">Plain-language information about what your results mean</p>
                             </span>
                         </button>
-                    </div>
-
-                    <!-- Recommendations for Blood Pressure Range - Populated by database -->
-                    <div class="rec-panel" id="range-recommendations" aria-live="polite" hidden>
-                        
                     </div>
                 </div>
             </section>
@@ -264,10 +274,10 @@
             </section>
 
 
-            <!-- Find Care Tab -->
+            <!-- Find Screening Locations Tab -->
             <section class="tab-panel" id="tab-findcare" hidden aria-labelledby="findcare-heading">
-                <!-- Find Care uses /api/facilities.php and /api/location-types.php. -->
-                <h1 id="findcare-heading" data-i18n="findcare.heading">Find care near you</h1>
+                <!-- Find Screening Locations uses /api/facilities.php and /api/location-types.php. -->
+                <h1 id="findcare-heading" data-i18n="findcare.heading">Find screening locations near you</h1>
                 <p class="tab-subheading" data-i18n="findcare.subheading">
                     Search by ZIP code or browse listed screening locations. Each location has a map-search link; contact the site to confirm screening access.
                 </p>
@@ -286,6 +296,12 @@
                     <label for="care-name-filter" data-i18n="findcare.name-label">Name or city</label>
                     <input id="care-name-filter" type="search" maxlength="100" placeholder="Optional keyword">
                 </div>
+
+                <div class="referral-callout">
+                    <h3 data-i18n="findcare.referral-heading">In a high range?</h3>
+                    <p data-i18n="findcare.referral-text">Talk with a healthcare professional about persistently elevated readings. These listings are primarily screening locations, not a directory of urgent-care services. For a medical emergency, call 911.</p>
+                </div>
+
                 <p class="care-search-error" id="care-search-error" role="alert" hidden></p>
                 <p id="care-search-status" class="help-text" role="status" aria-live="polite" data-i18n="findcare.loading">Loading screening locations…</p>
 
@@ -303,11 +319,6 @@
                     <button type="button" id="care-prev" data-i18n="findcare.prev-button">Previous</button>
                     <span id="care-page-label"></span>
                     <button type="button" id="care-next" data-i18n="findcare.next-button">Next</button>
-                </div>
-
-                <div class="referral-callout">
-                    <h3 data-i18n="findcare.referral-heading">In a high range?</h3>
-                    <p data-i18n="findcare.referral-text">Talk with a healthcare professional about persistently elevated readings. These listings are primarily screening locations, not a directory of urgent-care services. For a medical emergency, call 911.</p>
                 </div>
             </section>
 
@@ -352,26 +363,6 @@
                 </div>
             </section>
         </main>
-
-        <nav class="tab-bar" aria-label="Main">
-            <!-- Bottom navigation -->
-            <button type="button" class="tab-btn" data-tab="home" aria-current="page">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-                <span data-i18n="nav.home">Home</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="learn">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-                <span data-i18n="nav.learn">Learn</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="findcare">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5S16.4 3 12 3 5 5 5 9.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                <span data-i18n="nav.findcare">Find Care</span>
-            </button>
-            <button type="button" class="tab-btn" data-tab="about">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
-                <span data-i18n="nav.about">About</span>
-            </button>
-        </nav>
         <script src="script.js" defer></script>
     </body>
 </html>

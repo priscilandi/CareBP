@@ -63,14 +63,12 @@ function setPressed(buttons, selected) {
 const readingButtons = [...document.querySelectorAll('[data-hasreading]')];
 const machineButtons = [...document.querySelectorAll('[data-hasmachine]')];
 const rangeButtons = [...document.querySelectorAll('[data-bprange]')];
-const timeButtons = [...document.querySelectorAll('[data-bptime]')];
 const recPanel = $('range-recommendations');
 let selectedRange = '';
-let selectedTime = '';
 let selectionVersion = 0;
 let bpCategories = null;
 
-// 
+
 const categoryPromise = requestJson('/api/categories.php')
     .then(payload => {
         bpCategories = payload.data;
@@ -104,6 +102,7 @@ const rangeInfo = {
     elevated: 'This is the elevated adult range. Discuss repeated elevated readings and heart-healthy habits with a healthcare professional.',
     high: 'This matches the Stage 1 adult range. A clinician can assess repeated readings and your other health factors.',
     veryhigh: 'This matches at least the Stage 2 adult range. Arrange clinical follow-up for repeatedly high readings. A reading above 180 systolic or 120 diastolic needs immediate attention if it remains high on repeat; call 911 with emergency symptoms.',
+    hypertensiveCrisis: 'This is a hypertensive crisis. Seek immediate medical attention',
 };
 const ahaReadings = 'https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings';
 
@@ -135,21 +134,19 @@ function putLink(container, label, href) {
 
 // Only runs once the user has picked a range and a timeframe. Once they do it immediatly shows them static hardcoded text while it fetches the extra content
 async function populateRecommendationPanel() {
-    if (!selectedRange || !selectedTime) return;
+    if (!selectedRange) return;
     const thisSelection = ++selectionVersion;
     recPanel.hidden = false;
     $('NextSteps').hidden = false;
     recPanel.replaceChildren();
     putText(recPanel, 'h3', 'Your selected range');
     putText(recPanel, 'p', rangeInfo[selectedRange]);
-    if (selectedTime !== 'within3months') {
-        putText(recPanel, 'p', 'This reading may no longer reflect your current blood pressure. Consider checking it again and discuss any concerns with a healthcare professional.');
-    }
+    
     putLink(recPanel, 'Read the American Heart Association BP categories', ahaReadings);
     putText(recPanel, 'p', 'Checking one box here is not a diagnosis. Pregnancy uses different thresholds.', 'help-text');
     const loading = putText(recPanel, 'p', 'Checking for additional published guidance…', 'help-text');
     const categories = await categoryPromise;
-    // Checks to see if a range is selected as well as a timeframe
+    // Checks to see if a range is selected
     if (thisSelection !== selectionVersion) return;
     const categoryId = categories ? currentCategoryId() : null;
     if (!categoryId) {
@@ -182,69 +179,9 @@ async function populateRecommendationPanel() {
 }
 rangeButtons.forEach(button => button.addEventListener('click', () => {
     selectedRange = button.dataset.bprange;
-    selectedTime = '';
-    selectionVersion++;
     setPressed(rangeButtons, button);
-    timeButtons.forEach(option => option.setAttribute('aria-pressed', 'false'));
-    $('TSLS').hidden = false;
-    $('NextSteps').hidden = true;
-    recPanel.hidden = true;
-    recPanel.replaceChildren();
+    populateRecommendationPanel();
 }));
-timeButtons.forEach(button => button.addEventListener('click', () => {
-    selectedTime = button.dataset.bptime;
-    setPressed(timeButtons, button);
-    void populateRecommendationPanel();
-}));
-
-// -------- Learn: static, sourced backend articles (no education table in upload) --------
-// const topicButtons = [...document.querySelectorAll('.view-btn')];
-// const topicViews = Object.fromEntries([
-//     'numbers-mean', 'risk', 'check-home', 'pregnancy', 'midlife-and-menopause', 'talk-to-provider', 'managing-bp', 'blood-pressure'
-// ].map(name => [name, $(`topic-${name}`)]));
-// const learnGrid = document.querySelector('.learn-grid');
-// const loadedTopics = new Set();
-// let topicViewVersion = 0;
-
-
-// // WE SHOULDN'T NEED THIS IF WE ARE HARD CODING IN SUMMARIES AND HAVING A LINK TO AHA FOR THE USER TO READ MORE
-// // It fetches the data provided from the database for each piece of educational content
-// async function goToTopic(name) {
-//     if (!Object.hasOwn(topicViews, name)) return;
-//     const version = ++topicViewVersion;
-//     learnGrid.hidden = true;
-//     for (const [key, panel] of Object.entries(topicViews)) panel.hidden = key !== name;
-//     window.scrollTo({top: 0, behavior: 'instant'});
-//     topicViews[name].querySelector('h2').focus();
-//     if (loadedTopics.has(name)) return;
-//     const body = topicViews[name].querySelector('.topic-body');
-//     body.replaceChildren(putText(document.createDocumentFragment(), 'p', 'Loading topic…'));
-//     try {
-//         const {data} = await requestJson(`/api/education.php?topic=${encodeURIComponent(name)}`);
-//         if (version !== topicViewVersion) return;
-//         body.replaceChildren();
-//         for (const paragraph of data.paragraphs) putText(body, 'p', paragraph);
-//         putLink(body, `Source: ${data.source_label}`, data.source_url);
-//         loadedTopics.add(name);
-//     } catch {
-//         if (version !== topicViewVersion) return;
-//         const button = topicButtons.find(item => item.dataset.topic === name);
-//         body.replaceChildren();
-//         putText(body, 'p', button?.querySelector('span')?.textContent.trim() || 'This topic is unavailable right now.');
-//         putText(body, 'p', 'The full education article could not be loaded.', 'help-text');
-//     }
-// }
-
-// // Listens for a click to any of the card on the learn page
-// topicButtons.forEach(button => button.addEventListener('click', () => { void goToTopic(button.dataset.topic); }));
-// // Listens for a click of the back button
-// document.querySelectorAll('.back-btn').forEach(button => button.addEventListener('click', () => {
-//     topicViewVersion++;
-//     Object.values(topicViews).forEach(panel => { panel.hidden = true; });
-//     learnGrid.hidden = false;
-//     topicButtons[0]?.focus();
-//     window.scrollTo({top: 0, behavior: 'instant'});
-// }));
 
 // -------- Find Care: active screening locations in the uploaded SQL seed --------
 const searchForm = $('care-search-form');
