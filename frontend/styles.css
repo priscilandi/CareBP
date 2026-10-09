@@ -5,7 +5,7 @@
     --forest:#1C5B54;
     --forest-dark:#123F3A;
     --mint:#E7F0EE;
-    --logo:#c740178b;
+    --logo:#f5b0a9;
     --marigold-tint:#FBEED9;
     --cream:#F4F7F2;
     --paper:#FFFFFF;
@@ -67,7 +67,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .branding { display: inline-flex; align-items: center; gap: 11px; font-size: 1.45rem; font-weight: 850; color: var(--forest-dark); }
 .location-chip { border: 1px solid var(--border); background: var(--mint); border-radius: 999px; padding: 5px 12px; font-size: .87rem; color: var(--forest-dark); white-space: nowrap; }
 .disclaimer-strip {
-    background: var(--amber-tint); border-bottom: 1px solid rgb(180 121 27 / 35%); color: var(--amber);
+    background: var(--amber-tint); border-bottom: 1px solid rgb(180 121 27 / 35%); color: var(--forest-dark);
     font-size: .9rem; padding: 10px 22px; text-align: center;
 }
 .disclaimer-strip a { margin-left: 8px; color: var(--amber); }
