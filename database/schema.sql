@@ -47,8 +47,4 @@ CREATE TABLE recommendations (
     approved BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES bp_categories(category_id),
     FOREIGN KEY (type_id) REFERENCES location_types(type_id)
-<<<<<<< HEAD
 );
-=======
-);
->>>>>>> database-setup
