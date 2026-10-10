@@ -7,6 +7,7 @@
 
 DELETE FROM recommendations;
 DELETE FROM healthcare_locations;
+DELETE FROM zip_codes;
 DELETE FROM bp_categories;
 DELETE FROM location_types;
 
@@ -78,6 +79,38 @@ VALUES
 (8, 'Burke County Middle School', '356 Southside Drive', 'Waynesboro', 'GA', '30830', '706-554-3532', NULL, 33.083753077314, -81.99252621043, 1, 'https://bcms.burke.k12.ga.us/', 1, NULL),
 (8, 'Augusta Prep', '285 Flowing Wells Rd.', 'Augusta', 'GA', '30907', NULL, NULL, 33.500998957619, -82.107509031296, 1, NULL, 1, NULL),
 (8, 'Bamberg Middle School', '897 North St.', 'Bamberg', 'SC', '29003', NULL, NULL, 33.301574578872, -81.031597782704, 1, NULL, 1, NULL);
+
+-- ZIP CODE COORDINATES
+-- Used as the search origin for nearby-location searches.
+INSERT INTO zip_codes (zip_code, latitude, longitude) VALUES
+('29003', 33.3015746, -81.0315978),
+('29841', 33.4965282, -81.9594342),
+('30025', 33.6595370, -83.7237358),
+('30052', 33.7921224, -83.8785874),
+('30434', 32.9973975, -82.4065050),
+('30456', 32.9750156, -81.7574025),
+('30477', 32.8685571, -82.4083669),
+('30523', 34.6155684, -83.5242615),
+('30531', 34.5137615, -83.5282582),
+('30545', 34.7027731, -83.7305013),
+('30577', 34.5816472, -83.3301286),
+('30642', 33.5690234, -83.1833232),
+('30650', 33.5948807, -83.4530975),
+('30655', 33.7943516, -83.7157247),
+('30808', 33.4126372, -82.3832546),
+('30817', 33.7939011, -82.4775866),
+('30824', 33.4728187, -82.5030802),
+('30828', 33.4075772, -82.6618245),
+('30830', 33.0844216, -82.0149966),
+('30833', 33.2113554, -82.3862026),
+('30901', 33.4705085, -81.9836370),
+('30904', 33.4643420, -81.9980373),
+('30906', 33.4148234, -82.0583378),
+('30907', 33.5009990, -82.1075090),
+('30912', 33.4688469, -81.9878349),
+('31024', 33.3293393, -83.3917610),
+('31064', 33.3035859, -83.6808546),
+('31087', 33.2755065, -82.9686392);
 -- Sponsor-completed entries without a fixed public BP-monitor location are intentionally not inserted here:
 -- Phi Chi Chapter provides mobile/community BP screenings rather than a permanent public monitor location.
 -- DLAS BP-monitor equipment is housed internally in animal-research/vivarium facilities and is not a public screening location.
