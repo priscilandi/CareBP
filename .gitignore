@@ -170,3 +170,7 @@ Thumbs.db
 
 # Local database files
 *.db
+
+# for local environment variables
+.env
+.carebp/
