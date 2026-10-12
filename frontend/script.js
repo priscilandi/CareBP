@@ -108,7 +108,7 @@ const ahaReadings = 'https://www.heart.org/en/health-topics/high-blood-pressure/
 
 // Given the range chosen by the user, find the matching row in the Real DB and return its numeric value
 function currentCategoryId() {
-    const namePart = {normal: 'normal', elevated: 'elevated', high: 'stage 1', veryhigh: 'stage 2'}[selectedRange];
+    const namePart = {normal: 'normal', elevated: 'elevated', high: 'stage 1', veryhigh: 'stage 2', hypertensiveCrisis: 'hypertensive crisis'}[selectedRange];
     const item = bpCategories?.find(row => row.category_name.toLowerCase().includes(namePart));
     return item?.category_id;
 }
@@ -132,15 +132,23 @@ function putLink(container, label, href) {
     return link;
 }
 
-// Only runs once the user has picked a range and a timeframe. Once they do it immediatly shows them static hardcoded text while it fetches the extra content
+// Only runs once the user has picked a range. Once they do it immediatly shows them static hardcoded text while it fetches the extra content
 async function populateRecommendationPanel() {
     if (!selectedRange) return;
     const thisSelection = ++selectionVersion;
     recPanel.hidden = false;
-    $('NextSteps').hidden = false;
+    $('NextSteps').hidden = selectedRange === 'hypertensiveCrisis';
     recPanel.replaceChildren();
     putText(recPanel, 'h3', 'Your selected range');
     putText(recPanel, 'p', rangeInfo[selectedRange]);
+
+    recPanel.classList.toggle('rec-panel--crisis', selectedRange === 'crisis');
+    recPanel.setAttribute('aria-live', selectedRange === 'crisis' ? 'assertive' : 'polite');
+
+    if(selectedRange === 'hypertensiveCrisis') {
+        putLink(recPanel, 'Call 911 if you have emergency symptoms', 'tel:911');
+        scrollIntoView({behavior: 'auto', block: 'start'});
+    }
     
     putLink(recPanel, 'Read the American Heart Association BP categories', ahaReadings);
     putText(recPanel, 'p', 'Checking one box here is not a diagnosis. Pregnancy uses different thresholds.', 'help-text');
