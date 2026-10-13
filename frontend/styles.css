@@ -238,7 +238,7 @@ h3 { font-size: 1.08rem; }
 .bp-range-btn[data-bprange='veryhigh'][aria-pressed='true'] {
     background: var(--veryhigh-clicked); border-color: var(--veryhigh-clicked); color: #fff;
 }
-.bp-range-btn[data-bprange='crisis'][aria-pressed='true'] {
+.bp-range-btn[data-bprange='hypertensiveCrisis'][aria-pressed='true'] {
     background: var(--crisis-clicked);   border-color: var(--crisis-clicked);   color: #fff;
 }
  
