@@ -101,8 +101,8 @@ const rangeInfo = {
     normal: 'This is the normal adult range. A single reading is a snapshot; keep a record of readings over time.',
     elevated: 'This is the elevated adult range. Discuss repeated elevated readings and heart-healthy habits with a healthcare professional.',
     high: 'This matches the Stage 1 adult range. A clinician can assess repeated readings and your other health factors.',
-    veryhigh: 'This matches at least the Stage 2 adult range. Arrange clinical follow-up for repeatedly high readings. A reading above 180 systolic or 120 diastolic needs immediate attention if it remains high on repeat; call 911 with emergency symptoms.',
-    hypertensiveCrisis: 'This is a hypertensive crisis. Seek immediate medical attention',
+    veryhigh: 'This matches at least the Stage 2 adult range. Arrange clinical follow-up for repeatedly high readings. If your reading is higher than 180 systolic or higher than 120 diastolic, choose Hypertensive Crisis above and follow that guidance.',
+    hypertensiveCrisis: 'This reading is in the hypertensive crisis range. Wait a few minutes and re-check. If it is still this high, contact your clinician right away or call 911. If you feel unwell at any point, call 911.',
 };
 const ahaReadings = 'https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings';
 
@@ -137,17 +137,17 @@ async function populateRecommendationPanel() {
     if (!selectedRange) return;
     const thisSelection = ++selectionVersion;
     recPanel.hidden = false;
-    $('NextSteps').hidden = selectedRange === 'hypertensiveCrisis';
+    $('NextSteps').hidden = false;;
     recPanel.replaceChildren();
     putText(recPanel, 'h3', 'Your selected range');
     putText(recPanel, 'p', rangeInfo[selectedRange]);
 
-    recPanel.classList.toggle('rec-panel--crisis', selectedRange === 'crisis');
-    recPanel.setAttribute('aria-live', selectedRange === 'crisis' ? 'assertive' : 'polite');
+    recPanel.classList.toggle('rec-panel--crisis', selectedRange === 'hypertensiveCrisis');
+    recPanel.setAttribute('aria-live', selectedRange === 'hypertensiveCrisis' ? 'assertive' : 'polite');
 
     if(selectedRange === 'hypertensiveCrisis') {
-        putLink(recPanel, 'Call 911 if you have emergency symptoms', 'tel:911');
-        scrollIntoView({behavior: 'auto', block: 'start'});
+        putLink(recPanel, 'Call 911', 'tel:911');
+        recPanel.scrollIntoView({behavior: 'auto', block: 'start'});
     }
     
     putLink(recPanel, 'Read the American Heart Association BP categories', ahaReadings);

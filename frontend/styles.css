@@ -62,7 +62,7 @@ button, input, select { font: inherit; }
 button { cursor: pointer; }
 a { color: var(--ocean-dark); text-underline-offset: 3px; }
 button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
-    outline: 3px solid #d59838; outline-offset: 3px;
+    outline: 3px solid var(--ocean-dark); outline-offset: 3px;
 }
 [hidden] { display: none !important; }
 .visually-hidden {
@@ -89,7 +89,7 @@ main { max-width: 1060px; margin: 0 auto; padding: 34px 24px 125px; min-height: 
 h2, h3, h4 { line-height: 1.3; }
 h2 { font-size: 1.24rem; }
 h3 { font-size: 1.08rem; }
-.step-block, .about-block, .topic-body, .referral-callout, .rec-panel {
+.step-block, .about-block, .referral-callout, .rec-panel {
     background: var(--paper); border: 1px solid var(--border); border-radius: 18px;
     box-shadow: var(--shadow); padding: clamp(18px, 3.5vw, 28px); margin-bottom: 22px;
 }
@@ -122,7 +122,7 @@ h3 { font-size: 1.08rem; }
 .help-text { font-size: .91rem; color: var(--muted); line-height: 1.55; }
 .rec-panel { border-left: 5px solid var(--ocean); }
 .rec-panel h3 { margin-top: 0; }
-.rec-panel a { display: inline-block; margin-top: 6px; }
+.rec-panel a { display: block; width: fit-content; margin-top: 10px; }
 .rec-panel--crisis { border-left-color: var(--brick); background: var(--brick-tint); }
 
 
@@ -132,7 +132,7 @@ h3 { font-size: 1.08rem; }
     box-shadow: var(--shadow); padding: 21px 24px; margin-bottom: 14px;
     font-weight: 750; font-size: 1.06rem;
 }
-.learn-grid .summary-card:hover { border-color: var(--ocean); background: var(--mint); }
+
 .learn-grid .summary-card span { display: block; font-weight: 400; color: var(--muted); margin-top: 8px; font-size: .95rem; }
 
 
@@ -185,6 +185,7 @@ h3 { font-size: 1.08rem; }
     background: none; border: 0; border-radius: 10px; color: var(--ink-soft); font-weight: 700;
     padding: 12px 19px; min-width: min(20vw, 150px); font-size: .92rem;
 }
+
 /* Written by Ethan */
 @media screen and (min-width: 768px) {
     .tab-bar {
@@ -195,6 +196,7 @@ h3 { font-size: 1.08rem; }
     main { padding-bottom: 34px; }   /* the 125px was room for the old bottom bar */
 }
 /* End */
+
 .tab-btn svg { width: 22px; height: 22px; stroke: currentColor; flex-shrink: 0; }
 .tab-btn:hover { background: var(--mint); }
 .tab-btn[aria-current='page'] { color: #fff; background: var(--ocean-dark); }
@@ -202,7 +204,7 @@ h3 { font-size: 1.08rem; }
     main { padding: 25px 15px 126px; }
     .site-header { padding: 12px 16px; }
     .disclaimer-strip { text-align: left; padding: 10px 16px; font-size: .83rem; }
-    .step-block, .about-block, .topic-body, .referral-callout, .rec-panel { padding: 20px 17px; }
+    .step-block, .about-block, .referral-callout, .rec-panel { padding: 20px 17px; }
     .care-filters { grid-template-columns: 1fr; gap: 8px; }
     .care-filters label { margin-top: 8px; }
     .tab-btn { min-width: 0; flex: 1; font-size: .78rem; padding: 11px 4px; }
@@ -220,7 +222,7 @@ h3 { font-size: 1.08rem; }
     .bp-range-btn[data-bprange='elevated']:hover:not([aria-pressed='true'])  { background: var(--elevated-tint);  border-color: var(--elevated-clicked); }
     .bp-range-btn[data-bprange='high']:hover:not([aria-pressed='true'])      { background: var(--high-tint);      border-color: var(--high-clicked); }
     .bp-range-btn[data-bprange='veryhigh']:hover:not([aria-pressed='true'])  { background: var(--veryhigh-tint);  border-color: var(--veryhigh-clicked); }
-    .bp-range-btn[data-bprange='crisis']:hover:not([aria-pressed='true'])    { background: var(--crisis-tint);    border-color: var(--crisis-clicked); }
+    .bp-range-btn[data-bprange='hypertensiveCrisis']:hover:not([aria-pressed='true'])    { background: var(--crisis-tint);    border-color: var(--crisis-clicked); }
 }
  
 /* Pressed (selected) state */
