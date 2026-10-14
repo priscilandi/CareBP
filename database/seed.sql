@@ -111,13 +111,13 @@ INSERT INTO zip_codes (zip_code, latitude, longitude) VALUES
 ('31024', 33.3293393, -83.3917610),
 ('31064', 33.3035859, -83.6808546),
 ('31087', 33.2755065, -82.9686392);
--- Sponsor-completed entries without a fixed public BP-monitor location are intentionally not inserted here:
--- Phi Chi Chapter provides mobile/community BP screenings rather than a permanent public monitor location.
--- DLAS BP-monitor equipment is housed internally in animal-research/vivarium facilities and is not a public screening location.
--- The sponsor's Early Headstart in Burke County entry does not identify a specific fixed public BP-monitor location, so it remains pending clarification.
 
--- The sponsor spreadsheet remains the source of truth for BP-monitor rollout;
--- external sources should only be used to complete missing location details.
+-- Additional ZIP code coordinates for Georgia, South Carolina,
+-- and Mississippi are stored in: database/data/zip_codes_ga_sc_ms.csv
+
+-- The CSV contains 1,602 ZIP Code Tabulation Areas (ZCTAs).
+-- These coordinates will be imported separately after running seed.sql.
+-- Existing ZIP code coordinates should not be overwritten.
 
 -- BP CATEGORIES
 
