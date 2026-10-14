@@ -209,6 +209,20 @@ curl -s 'http://carebp.local/api/facilities.php?zip=30904'
 
 If the frontend works but `/api/` responds with 404, check that this virtual host is active and that its `/api/` alias points to the correct deployed directory. If PHP source appears in the browser or downloads instead of executing, disable access until you fix the Apache PHP handler.
 
+### Troubleshooting
+
+If `carebp.local` does not load, resolves to the wrong address, Apache serves the
+default site, or `/api/` returns an error, see [Troubleshooting](troubleshooting.md).
+
+Common areas covered there include:
+
+- Windows and WSL hostname resolution
+- Hosts file configuration
+- Apache virtual host conflicts
+- Port 80 connectivity
+- API routing issues
+- PHP handler problems
+
 ### Public hosting is a separate deployment step
 
 The supplied Apache config and HTTP example are **for local development**. Before exposing an installation to the Internet, use a real domain, configure HTTPS/TLS and appropriate access logs, verify the sponsor's location/medical data, and review server hardening and access permissions. Do not point Apache's `DocumentRoot` at `/var/www/carebp` or otherwise expose `.env`, SQL, or internal PHP files. The supplied admin and audit placeholders are not a secured management system.
