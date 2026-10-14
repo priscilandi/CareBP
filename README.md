@@ -64,7 +64,6 @@ All following commands should be run from the project root unless otherwise spec
 
 ## 3. Configure Environment Variables
 
-Copy the provided environment template:
 
 ```bash
 cp .env.example .env
@@ -106,6 +105,22 @@ The setup script:
 4. Prepares the database for local application testing.
 
 **Warning:** Refreshing the development seed can replace existing seeded table data.
+
+### Expanded ZIP code coverage
+
+CareBP supports nearby-location searches using ZIP code coordinates
+from Georgia, South Carolina, and Mississippi.
+
+The development seed includes 1,602 ZIP Code Tabulation Areas (ZCTAs).
+All ZIP code coordinates are automatically loaded when running `seed.sql`.
+
+The original dataset is stored in `database/data/zip_codes_ga_sc_ms.csv`.
+The Python scripts in `database/scripts/` are retained for future
+data updates but are not required for normal setup.
+
+**Important:** `seed.sql` resets development data, including ZIP code
+coordinates. Only run it against a dedicated development database.
+`schema.sql` is intended for an empty database, not as a migration.
 
 ### Check Database Status
 
