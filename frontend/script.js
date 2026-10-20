@@ -353,6 +353,8 @@ async function loadLocations(page = 1) {
     if (zip) {
         params.set('zip', zip);
         params.set('nearby', '1');
+        const radius = document.getElementById('care-radius').value;
+        params.set('radius_miles', radius);
     }
     if (typeFilter.value) params.set('type_id', typeFilter.value);
     if (nameFilter.value.trim()) params.set('q', nameFilter.value.trim());

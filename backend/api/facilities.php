@@ -56,6 +56,26 @@ runApi(static function (): never {
         );
     }
 
+    $radiusMiles = null;
+    if ($nearby && isset($_GET['radius_miles'])) {
+        $radiusInput = $_GET['radius_miles'];
+        if ($radiusInput !== 'all') {
+            if (
+                !is_scalar($radiusInput) ||
+                !is_numeric($radiusInput) ||
+                (float) $radiusInput <= 0 ||
+                (float) $radiusInput > 100
+            ) {
+                throw new ApiException(
+                    422,
+                    'invalid_radius',
+                    'Radius must be between 0 and 100 miles.'
+                );
+            }
+            $radiusMiles = (float) $radiusInput;
+        }
+    }
+
     $q = queryString('q', 100);
     $city = queryString('city', 80);
     $state = queryString('state', 2);
@@ -94,6 +114,16 @@ runApi(static function (): never {
 
         $where[] = 'l.latitude IS NOT NULL';
         $where[] = 'l.longitude IS NOT NULL';
+
+    if ($radiusMiles !== null) {
+        $where[] = 'ST_Distance_Sphere(
+            POINT(:radius_lon, :radius_lat),
+            POINT(l.longitude, l.latitude)
+        ) <= :radius_meters';
+        $params['radius_lon'] = $searchLon;
+        $params['radius_lat'] = $searchLat;
+        $params['radius_meters'] = $radiusMiles * 1609.344;
+    }
 
     } elseif ($zip !== '') {
         $where[] = 'l.zip_code = :zip';
