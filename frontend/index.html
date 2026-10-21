@@ -7,12 +7,10 @@
         <title data-i18n="head.title">CareBP: Community Access, Resources, and Education for Blood Pressure</title>
 
 
-        <!-- Added by Ethan: Not sure if we need this -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
             crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
-        <!-- End -->
 
         <link rel="stylesheet" href="styles.css">
     </head>
@@ -26,10 +24,9 @@
                 </span>                
                 <span data-i18n="header.brand">CareBP</span>
             </div>
-            <span class="location-chip">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5S16.4 3 12 3 5 5 5 9.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-                <span data-i18n="header.location-chip">Screening locations</span>
-            </span>
+            <button type="button" class="language-toggle" id="lang-toggle" hidden>
+                <span class="language-chip"><span data-lang-label>Español</span></span>
+            </button>
         </header>
 
         <div class="disclaimer-strip">
@@ -132,32 +129,32 @@
                             If a reading is above 180 systolic or 120 diastolic, repeat after a minute. If it stays that high, contact your clinician immediately or call 911.</p>
                         <button type="button" class="bp-range-btn" id="bp-range-normal" data-bprange="normal" aria-pressed="false">
                             <span>
-                                &lt;120 / &lt;80
+                                Systolic: Less than 120 / Diastolic: Less than 80
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-normal">Normal</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" id="bp-range-elevated" data-bprange="elevated" aria-pressed="false">
                             <span>
-                                120–129 / &lt;80 
+                                Systolic: 120–129 / Diastolic: Less than 80
                                 <span class="range-option-label" data-i18n="home.home-step-2-range-elevated">Elevated</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" id="bp-range-high" data-bprange="high" aria-pressed="false">
                             <span>
-                                130–139 or 80–89
-                                <span class="range-option-label" data-i18n="home.home-step-2-range-high">High, Stage 1</span>
+                                Systolic: 130–139 / Diastolic: 80–89
+                                <span class="range-option-label" data-i18n="home.home-step-2-range-high">Stage 1 Hypertension</span>
                             </span>
                         </button>
                         <button type="button" class="bp-range-btn" id="bp-range-veryhigh" data-bprange="veryhigh" aria-pressed="false">
                             <span>
-                                140+ or 90+
-                                <span class="range-option-label" data-i18n="home.home-step-2-range-veryhigh">High, Stage 2</span>
+                                Systolic: 140 OR Higher AND/OR Diastolic: 90 OR Higher
+                                <span class="range-option-label" data-i18n="home.home-step-2-range-veryhigh">Stage 2 Hypertension</span>
                             </span>
                         </button>
-                        <button type="button" class="bp-range-btn" id="bp-range-crisis" data-bprange="crisis" aria-pressed="false">
+                        <button type="button" class="bp-range-btn" id="bp-range-crisis" data-bprange="hypertensiveCrisis" aria-pressed="false">
                             <span>
-                                180+ or 120+
-                                <span class="range-option-label" data-i18n="home.home-step-2-range-crisis">Hypertensive Crisis</span>
+                                Systolic: 180 OR Higher AND/OR Diastolic: 120 OR Higher
+                                <span class="range-option-label" data-i18n="home.home-step-2-range-crisis">Hypertensive Emergency</span>
                             </span>
                         </button>
                     </div>
@@ -363,6 +360,9 @@
                 </div>
             </section>
         </main>
+        <script src="en.js" defer></script>
+        <script src="es.js" defer></script>
+        <script src="i18n.js" defer></script>
         <script src="script.js" defer></script>
     </body>
 </html>

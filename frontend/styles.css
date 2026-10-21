@@ -9,7 +9,6 @@
     --cream:#F5F7FA;
     --paper:#FFFFFF;
     --border:#D3DCE6;          /* decorative dividers and card edges only */
-    --border-strong:#6B7A89;   /* edges of buttons and inputs (4.4:1, needs 3:1) */
     --sage:#0A4D8C;            /* care-type pill text */
     --sage-tint:#E6F0FA;
     --amber:#8A4B00;
@@ -18,29 +17,24 @@
     --orange-tint:#FDE9D6;
     --brick:#8C1D18;
     --brick-tint:#FBE4E1;
-    --focus:#0B5CAD;
     --pine-tint:var(--mint);
     --pine-dark:var(--ocean-dark);
     --ink-soft:var(--muted);
-    --marigold-tint:var(--amber-tint);
-    --radius-md:14px;
-    --radius-lg:20px;
     --font-display:'Manrope', sans-serif;
-    --font-body:'Source Sans 3', sans-serif;
-    --sidebar-w:230px;
     --shadow: 0 2px 14px rgb(23 33 43 / 8%);
 
-    /* BP Ranges */
-    --normal-tint:#4fbd4d;
-    --elevated-tint:#b5a94b;
-    --high-tint:#b17752;
-    --veryhigh-tint:#a54f4f;
-    --crisis-tint:#7d5b59;
-
+    /* Pale hover tints (dark --ink text stays readable on all of these) */
+    --normal-tint:#DDF3DD;
+    --elevated-tint:#F6F0C8;
+    --high-tint:#FBE0CC;
+    --veryhigh-tint:#F7D4D4;
+    --crisis-tint:#E8D5D3;
+ 
+    /* Pressed colors */
     --normal-clicked:#00c200;
     --elevated-clicked:#f0c000;
     --high-clicked:#ff7f00;
-    --veryhigh-clicked:#ff0000;
+    --veryhigh-clicked:#d90000;   /* was #ff0000; ~4:1 contrast with either text color, this is ~5.3:1 with white */
     --crisis-clicked:#7f0000;
 
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
@@ -52,12 +46,15 @@
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
   .brand-mark svg{width:22px; height:22px;}
-  .location-chip{
-    display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.12);
-    border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 14px;
-    border-radius:999px; font-size:.95rem; font-weight:600; white-space:nowrap;
-  }
-  .location-chip svg{width:16px; height:16px;}
+  .language-toggle { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; border-radius: 999px; }
+    .language-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.55);
+        color: #fff; padding: 9px 16px; border-radius: 999px;
+        font-size: .95rem; font-weight: 600; white-space: nowrap;
+    }
+    .language-toggle:hover .language-chip { background: rgba(255,255,255,.22); }
+    .language-toggle:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 /* ------- Written by Ethan ------- */
 
 /* AI Generated but modified by Ethan */
@@ -68,7 +65,7 @@ button, input, select { font: inherit; }
 button { cursor: pointer; }
 a { color: var(--ocean-dark); text-underline-offset: 3px; }
 button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
-    outline: 3px solid #d59838; outline-offset: 3px;
+    outline: 3px solid var(--ocean-dark); outline-offset: 3px;
 }
 [hidden] { display: none !important; }
 .visually-hidden {
@@ -83,8 +80,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
     display: flex; justify-content: space-between; align-items: center;
     gap: 14px; padding: 14px max(20px, calc((100% - 1040px) / 2));
 }
-.branding { display: inline-flex; align-items: center; gap: 11px; font-size: 1.45rem; font-weight: 850; color: var(--ocean-dark); }
-.location-chip { border: 1px solid var(--border); background: var(--mint); border-radius: 999px; padding: 5px 12px; font-size: .87rem; color: var(--ocean-dark); white-space: nowrap; }
+
 .disclaimer-strip {
     background: var(--amber-tint); border-bottom: 1px solid rgb(180 121 27 / 35%); color: var(--ocean-dark);
     font-size: .9rem; padding: 10px 22px; text-align: center;
@@ -96,20 +92,20 @@ main { max-width: 1060px; margin: 0 auto; padding: 34px 24px 125px; min-height: 
 h2, h3, h4 { line-height: 1.3; }
 h2 { font-size: 1.24rem; }
 h3 { font-size: 1.08rem; }
-.step-block, .about-block, .topic-body, .referral-callout, .rec-panel {
+.step-block, .about-block, .referral-callout, .rec-panel {
     background: var(--paper); border: 1px solid var(--border); border-radius: 18px;
     box-shadow: var(--shadow); padding: clamp(18px, 3.5vw, 28px); margin-bottom: 22px;
 }
 .step-label, .step-block h2, .step-block h3, .about-block h2 { margin-top: 0; }
 .choice-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;}
-.choice-btn, .bp-range-btn, .care-submit, .back-btn,
+.choice-btn, .bp-range-btn, .care-submit,
 .care-pagination button, .care-filters select, .care-filters input {
     border: 1.5px solid var(--border); background: #fff;
     color: var(--ink); border-radius: 12px; padding: 13px 17px;
 }
 .choice-btn { min-width: 100px; font-weight: 750; flex: 1;}
-.choice-btn:hover, .bp-range-btn:hover, .back-btn:hover { border-color: var(--ocean); background: var(--mint); }
-.choice-btn[aria-pressed='true'], .bp-range-btn[aria-pressed='true'] {
+.choice-btn:hover { border-color: var(--ocean); background: var(--mint); }
+.choice-btn[aria-pressed='true'] {
     background: var(--ocean-dark); color: white; border-color: var(--ocean-dark); align-items: center;
 }
 .bp-range-btn { display: block; width: 100%; margin: 11px 0; text-align: left; font-size: 1.06rem; font-weight: 700; }
@@ -129,19 +125,20 @@ h3 { font-size: 1.08rem; }
 .help-text { font-size: .91rem; color: var(--muted); line-height: 1.55; }
 .rec-panel { border-left: 5px solid var(--ocean); }
 .rec-panel h3 { margin-top: 0; }
-.rec-panel a { display: inline-block; margin-top: 6px; }
+.rec-panel a { display: block; width: fit-content; margin-top: 10px; }
+.rec-panel--crisis { border-left-color: var(--brick); background: var(--brick-tint); }
+
+
 .learn-grid .summary-card {
     width: 100%; text-align: left; display: block; background: #fff;
     color: var(--ink); border: 1px solid var(--border); border-radius: 16px;
     box-shadow: var(--shadow); padding: 21px 24px; margin-bottom: 14px;
     font-weight: 750; font-size: 1.06rem;
 }
-.learn-grid .summary-card:hover { border-color: var(--ocean); background: var(--mint); }
+
 .learn-grid .summary-card span { display: block; font-weight: 400; color: var(--muted); margin-top: 8px; font-size: .95rem; }
-.back-btn { margin-bottom: 20px; }
-.topic-body p:first-child { margin-top: 0; }
-.topic-body p { line-height: 1.74; }
-.topic-body a { display: block; margin-top: 20px; overflow-wrap: anywhere; }
+
+
 .care-search { display: flex; gap: 10px; max-width: 640px; margin: 0 0 18px; }
 .care-search input {
     flex: 1; min-width: 0; padding: 14px 16px; font: inherit;
@@ -160,7 +157,7 @@ h3 { font-size: 1.08rem; }
 }
 #care-map { isolation: isolate; }
 #map-container > p { max-width: 600px; color: var(--ink-soft); padding: 16px 24px; }
-#map-container iframe { border: none; width: 100%; min-height: 290px; }
+
 #care-map { width: 100%; height: 290px; border-radius: 10px; overflow: hidden; }
 .care-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 265px), 1fr)); gap: 16px; margin: 22px 0; }
 .care-card { background: white; border: 1px solid var(--border); border-radius: 15px; padding: 19px; box-shadow: var(--shadow); overflow-wrap: anywhere; }
@@ -191,6 +188,7 @@ h3 { font-size: 1.08rem; }
     background: none; border: 0; border-radius: 10px; color: var(--ink-soft); font-weight: 700;
     padding: 12px 19px; min-width: min(20vw, 150px); font-size: .92rem;
 }
+
 /* Written by Ethan */
 @media screen and (min-width: 768px) {
     .tab-bar {
@@ -201,6 +199,7 @@ h3 { font-size: 1.08rem; }
     main { padding-bottom: 34px; }   /* the 125px was room for the old bottom bar */
 }
 /* End */
+
 .tab-btn svg { width: 22px; height: 22px; stroke: currentColor; flex-shrink: 0; }
 .tab-btn:hover { background: var(--mint); }
 .tab-btn[aria-current='page'] { color: #fff; background: var(--ocean-dark); }
@@ -208,7 +207,7 @@ h3 { font-size: 1.08rem; }
     main { padding: 25px 15px 126px; }
     .site-header { padding: 12px 16px; }
     .disclaimer-strip { text-align: left; padding: 10px 16px; font-size: .83rem; }
-    .step-block, .about-block, .topic-body, .referral-callout, .rec-panel { padding: 20px 17px; }
+    .step-block, .about-block, .referral-callout, .rec-panel { padding: 20px 17px; }
     .care-filters { grid-template-columns: 1fr; gap: 8px; }
     .care-filters label { margin-top: 8px; }
     .tab-btn { min-width: 0; flex: 1; font-size: .78rem; padding: 11px 4px; }
@@ -217,3 +216,34 @@ h3 { font-size: 1.08rem; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 /* End of AI Generation - Modified by Ethan */
+
+
+
+/* Hover only on devices that really hover, and not on the pressed button */
+@media (hover: hover) {
+    .bp-range-btn[data-bprange='normal']:hover:not([aria-pressed='true'])    { background: var(--normal-tint);    border-color: var(--normal-clicked); }
+    .bp-range-btn[data-bprange='elevated']:hover:not([aria-pressed='true'])  { background: var(--elevated-tint);  border-color: var(--elevated-clicked); }
+    .bp-range-btn[data-bprange='high']:hover:not([aria-pressed='true'])      { background: var(--high-tint);      border-color: var(--high-clicked); }
+    .bp-range-btn[data-bprange='veryhigh']:hover:not([aria-pressed='true'])  { background: var(--veryhigh-tint);  border-color: var(--veryhigh-clicked); }
+    .bp-range-btn[data-bprange='hypertensiveCrisis']:hover:not([aria-pressed='true'])    { background: var(--crisis-tint);    border-color: var(--crisis-clicked); }
+}
+ 
+/* Pressed (selected) state */
+.bp-range-btn[data-bprange='normal'][aria-pressed='true'] {
+    background: var(--normal-clicked);   border-color: var(--normal-clicked);   color: var(--ink);
+}
+.bp-range-btn[data-bprange='elevated'][aria-pressed='true'] {
+    background: var(--elevated-clicked); border-color: var(--elevated-clicked); color: var(--ink);
+}
+.bp-range-btn[data-bprange='high'][aria-pressed='true'] {
+    background: var(--high-clicked);     border-color: var(--high-clicked);     color: var(--ink);
+}
+.bp-range-btn[data-bprange='veryhigh'][aria-pressed='true'] {
+    background: var(--veryhigh-clicked); border-color: var(--veryhigh-clicked); color: #fff;
+}
+.bp-range-btn[data-bprange='hypertensiveCrisis'][aria-pressed='true'] {
+    background: var(--crisis-clicked);   border-color: var(--crisis-clicked);   color: #fff;
+}
+ 
+/* Keep the label under each range fully readable on the colored backgrounds */
+.bp-range-btn[aria-pressed='true'] .range-option-label { opacity: 1; }
