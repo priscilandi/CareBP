@@ -14,6 +14,18 @@ $routes = [
     '/api/health.php' => __DIR__ . '/api/health.php',
 ];
 
+// Admin pages are explicit allowlisted routes; never expose arbitrary backend files.
+$adminPaths = ['index.php','facilities.php','add.php','edit.php','remove.php',
+               'recommendations.php','approvals.php','audit-log.php','login.php','logout.php'];
+if ($path === '/admin' || $path === '/admin/') {
+    header('Location: /admin/index.php'); return true;
+}
+if (is_string($path) && str_starts_with($path, '/admin/')) {
+    $name = substr($path, strlen('/admin/'));
+    if (in_array($name, $adminPaths, true)) {
+        require __DIR__ . '/admin/' . $name; return true;
+    }
+}
 if (isset($routes[$path])) {
     require $routes[$path];
     return true;
