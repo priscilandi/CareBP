@@ -41,6 +41,29 @@
   .location-chip svg{width:16px; height:16px;}
 /* ------- Written by Ethan ------- */
 
+/* ------- Written by Tucker ------ */
+img.pink { 
+  filter: hue-rotate(100deg); /* Adjust degrees to get different colors */
+}
+
+img.orange 
+{ 
+  filter: hue-rotate(160deg); 
+}
+img.green 
+{ 
+  filter: hue-rotate(280deg); 
+}
+img.purple 
+{ 
+  filter: hue-rotate(40deg); 
+}
+img.blue 
+{ 
+  filter: hue-rotate(0deg);
+}
+/* ------- Written by Tucker ------ */
+
 /* AI Generated but modified by Ethan */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
