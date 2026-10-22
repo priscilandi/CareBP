@@ -203,7 +203,7 @@ const pagination = $('care-pagination');
 let currentPage = 1;
 let requestVersion = 0;
 let careMap = null;
-let careMarkers = null;
+let cares = null;
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -260,7 +260,7 @@ function renderMap(rows) {
     if (careMap) {
         careMap.remove();
         careMap = null;
-        careMarkers = null;
+        cares = null;
     }
     mapContainer.replaceChildren();
 
@@ -298,8 +298,49 @@ function renderMap(rows) {
         if (row.address) {
             popup.append(document.createElement('br'), row.address);
         }
-        return L.marker([row.latitude, row.longitude]).bindPopup(popup);
-    });
+         let marker = L.marker([row.latitude, row.longitude]).bindPopup(popup);
+        switch(row.type_name)
+            {
+                case "Church":
+                    marker.on('add', function()// Waits for the marker to be added to the map before running
+                    {
+                        if (marker._icon) 
+                        {
+                            marker._icon.classList.add("orange");
+                        }
+                    });
+                    break;
+                case "Community Location":
+                     marker.on('add', function() 
+                    {
+                        if (marker._icon) 
+                        {
+                            marker._icon.classList.add("green");
+                        }
+                    });
+                    break;
+                case "Library":
+                     marker.on('add', function() 
+                    {
+                        if (marker._icon) 
+                        {
+                            marker._icon.classList.add("purple");
+                        }
+                    });
+                    break;
+                case "School":
+                     marker.on('add', function() 
+                    {
+                        if (marker._icon) 
+                        {
+                            marker._icon.classList.add("blue");
+                        }
+                    });
+                    break;
+        
+            }
+        return marker;
+        });
 
     careMarkers = L.featureGroup(markers).addTo(careMap);
     careMap.fitBounds(careMarkers.getBounds().pad(0.15));
