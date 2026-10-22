@@ -42,7 +42,8 @@
 /* ------- Written by Ethan ------- */
 
 /* ------- Written by Tucker ------ */
-img.pink { 
+img.pink 
+{ 
   filter: hue-rotate(100deg); /* Adjust degrees to get different colors */
 }
 
