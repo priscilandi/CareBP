@@ -1,58 +1,28 @@
-# CareBP Backend
+# CareBP admin integration ( IN DEVELOPMENT )
 
-The `backend/` directory contains the PHP files responsible for server-side logic, database access, API functionality, and administrative tools.
+## Configure development environment
 
-## Admin Files
+In the project-root `.env`, use the existing DB_HOST, DB_PORT, DB_NAME, DB_USER and DB_PASSWORD settings and add:
 
-The `backend/admin/` directory contains pages intended for CareBP administrators. These pages should eventually be protected with authentication and restricted from public users.
+    ADMIN_PASSWORD=choose-a-long-unique-local-password
 
-### `index.php`
-Admin landing page and dashboard.
+Never commit `.env` to Git. Prefer an environment variable over storing the password in `.env`. This is a simple development-only shared password, not suitable for deployment.
 
-**Used for:**
-- Providing links to the main admin tools
-- Displaying basic administrative information
-- Serving as the starting point for administrators
+Start from the project root:
 
-### `facilities.php`
-Manages CareBP facility and screening-location records.
+    php -S 127.0.0.1:8000 -t frontend backend/router.php
 
-**Used for:**
-- Viewing facility records
-- Adding or editing locations
-- Updating facility information such as address, ZIP code, phone number, and availability
+Visit http://127.0.0.1:8000/admin/login.php, then go to Facilities.
 
-### `recommendations.php`
-Manages blood pressure guidance and recommendation content.
+## Implementation notes
 
-**Used for:**
-- Viewing recommendations stored in the database
-- Adding or editing recommendation text
-- Associating guidance with blood pressure categories or location types
+- Facilities supports add/edit/delete, prepared PDO statements, validation, CSRF protection, and HTML escaping. It uses `backend/config/database.php::getDatabase()` and matches `healthcare_locations.location_id` and the required `type_id`.
+- Delete permanently removes rows; consider implementing archive (`is_active=0`) instead for production.
+- Recommendations/Approvals/Audit Log remain placeholders. The provided schema has `recommendations.approved` but has no explicit audit-log or pending-facility-change tables.
+- Development router `/admin/` allowlist updated. Apache file was also updated.
+- No complete authentication system: password-based protection is for **local development only**. Do not deploy this publicly without proper user authentication/authorization, rate limits, HTTPS, secure cookie settings and audit trails.
+- Existing database data is not modified by installing files. Facility actions in the UI DO CHANGE the DB.
 
-### `approvals.php`
-Handles review and approval of pending changes.
+## Code attribution
 
-**Used for:**
-- Reviewing submitted updates
-- Approving or rejecting changes before they are published
-- Supporting a controlled update process
-
-### `audit-log.php`
-Tracks administrative activity.
-
-**Used for:**
-- Recording changes made by administrators
-- Reviewing previous administrative actions
-- Providing accountability for database updates
-
-## Structure
-
-```text
-backend/
-└── admin/
-    ├── index.php
-    ├── facilities.php
-    ├── recommendations.php
-    ├── approvals.php
-    └── audit-log.php
+Comments in `backend/admin/facilities.php`, `add.php`, `edit.php`, and `remove.php` identify the CRUD concepts adapted from Kendra's original `index.php`, `add.php`, `edit.php`, and `remove.php`. These files have been modified to use the CareBP schema and backend. `admin_helpers.php` is new integration code supporting those workflows. The admin dashboard `index.php` is based on the project's existing dashboard, not Kendra's CRUD page.

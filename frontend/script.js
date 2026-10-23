@@ -98,11 +98,11 @@ machineButtons.forEach(button => button.addEventListener('click', () => {
 document.querySelectorAll('[data-hasreading-ql]').forEach(button => button.addEventListener('click', enterYesBranch));
 
 const rangeInfo = {
-    normal: 'This is the normal adult range. A single reading is a snapshot; keep a record of readings over time.',
-    elevated: 'This is the elevated adult range. Discuss repeated elevated readings and heart-healthy habits with a healthcare professional.',
-    high: 'This matches the Stage 1 adult range. A clinician can assess repeated readings and your other health factors.',
-    veryhigh: 'This matches at least the Stage 2 adult range. Arrange clinical follow-up for repeatedly high readings. If your reading is higher than 180 systolic or higher than 120 diastolic, choose Hypertensive Crisis above and follow that guidance.',
-    hypertensiveCrisis: 'This reading is in the hypertensive crisis range. Wait a few minutes and re-check. If it is still this high, contact your clinician right away or call 911. If you feel unwell at any point, call 911.',
+    normal: 'This is within the normal adult blood pressure range. A single reading is a snapshot; It is best to keep a record of readings over time.',
+    elevated: 'This is within the elevated adult blood pressure range. Discuss repeated elevated readings and heart-healthy habits with a healthcare professional.',
+    high: 'This is within the Stage 1 hypertension adult blood pressure range. A healthcare professional can assess your readings over time and consider other health factors.',
+    veryhigh: 'This is within the Stage 2 hypertension adult blood pressure range. If your readings remain high over a week or longer, contact a healthcare professional for follow-up. If either your systolic pressure is above 180 or your diastolic pressure is above 120, follow the guidance for very high blood pressure below. ',
+    hypertensiveCrisis: 'Your blood pressure is severely high. Wait 5 minutes and measure again. If your systolic pressure is still above 180 or your diastolic pressure is still above 120, contact a healthcare professional immediately. If you have chest pain, shortness of breath, weakness, numbness, changes in vision, or difficulty speaking, call 911.',
 };
 const ahaReadings = 'https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings';
 
@@ -139,7 +139,7 @@ async function populateRecommendationPanel() {
     recPanel.hidden = false;
     $('NextSteps').hidden = false;;
     recPanel.replaceChildren();
-    putText(recPanel, 'h3', 'Your selected range');
+    putText(recPanel, 'h3', 'Blood pressure reading range you selected');
     putText(recPanel, 'p', rangeInfo[selectedRange]);
 
     recPanel.classList.toggle('rec-panel--crisis', selectedRange === 'hypertensiveCrisis');
@@ -150,8 +150,8 @@ async function populateRecommendationPanel() {
         recPanel.scrollIntoView({behavior: 'auto', block: 'start'});
     }
     
-    putLink(recPanel, 'Read the American Heart Association BP categories', ahaReadings);
-    putText(recPanel, 'p', 'Checking one box here is not a diagnosis. Pregnancy uses different thresholds.', 'help-text');
+    putLink(recPanel, 'Learn about the American Heart Association blood pressure categories', ahaReadings);
+    putText(recPanel, 'p', 'This information is for educational purposes only and is not a diagnosis. Blood pressure thresholds during pregnancy are different.', 'help-text');
     const loading = putText(recPanel, 'p', 'Checking for additional published guidance…', 'help-text');
     const categories = await categoryPromise;
     // Checks to see if a range is selected
@@ -179,7 +179,7 @@ async function populateRecommendationPanel() {
                 }
             }
         } else {
-            putText(recPanel, 'p', 'This database currently contains demonstration guidance only; it is not shown as medical advice.', 'help-text');
+            putText(recPanel, 'p', 'This database currently contains demonstration content only. It is not medical advice.', 'help-text');
         }
     } catch {
         if (thisSelection === selectionVersion) loading.textContent = 'Additional database guidance is temporarily unavailable.';

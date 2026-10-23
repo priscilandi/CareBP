@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="CareBP: learn about blood pressure and search community screening locations by ZIP code.">
+        <meta name="description" content="Learn about blood pressure and find community-based blood pressure monitor access points by ZIP code with CareBP.">
         <title data-i18n="head.title">CareBP: Community Access, Resources, and Education for Blood Pressure</title>
 
 
@@ -30,7 +30,7 @@
         </header>
 
         <div class="disclaimer-strip">
-            <strong data-i18n="disclaimer.strong">Educational tool only.</strong>
+            <strong data-i18n="disclaimer.strong">For educational purposes only.</strong>
             <span data-i18n="disclaimer.text">CareBP doesn't diagnose or treat medical conditions. Always consult a healthcare professional for medical advice.</span>
             <a href="#" data-goto="about" data-i18n="disclaimer.link">Learn more</a>
         </div>
@@ -59,10 +59,10 @@
         <main id="main-content">
             <!-- Home Tab -->
             <section class="tab-panel" id="tab-home" aria-labelledby="home-heading">
-                <h1 id="home-heading" data-i18n="home.home-heading">Understand your blood pressure</h1>
+                <h1 id="home-heading" data-i18n="home.home-heading">UNDERSTAND YOUR BLOOD PRESSURE</h1>
                 <p class="tab-subheading" data-i18n="home.home-subheading">
-                    Answer a couple of quick questions to get guidance and, if needed, find 
-                    care nearby - no account, no exact blood pressure screening results required.
+                    Answer a few quick questions to get guidance and access a free 
+                    blood pressure monitor nearby. No account or exact blood pressure reading required. 
                 </p>
 
                 <div class="step-block">
@@ -74,11 +74,11 @@
                 </div>
 
                 <div class="home-no-panel" id="home-no-panel" hidden>
-                    <h3 data-i18n="home.home-no-panel-heading">No problem - let's figure out the best next step.</h3>
+                    <h3 data-i18n="home.home-no-panel-heading">No problem! Let's figure out the best next step.</h3>
 
                     <div class="step-block">
-                        <h2 class="step-label" data-i18n="home.home-step-2">Do you have access to a blood pressure screening machine?</h2>
-                        <div role="group" aria-label="Do you have access to a blood pressure screening machine?" class="choice-row">
+                        <h2 class="step-label" data-i18n="home.home-step-2">Do you have access to a blood pressure monitor?</h2>
+                        <div role="group" aria-label="Do you have access to a blood pressure monitor?" class="choice-row">
                             <button type="button" class="choice-btn" data-hasmachine="yes" aria-pressed="false" data-i18n="home.home-step-yes">Yes</button>
                             <button type="button" class="choice-btn" data-hasmachine="no" aria-pressed="false" data-i18n="home.home-step-no">No</button>
                         </div>
@@ -86,13 +86,13 @@
 
                     <!-- Screening Instructions. Has machine -->
                     <div class = "step-block" id="Screening-Instructions" hidden>
-                        <h3 data-i18n="home.home-step-2-instructions">How to measure your blood pressure correctly</h3>
+                        <h3 data-i18n="home.home-step-2-instructions">How to measure your blood pressure</h3>
                         <ul>
-                            <li data-i18n="home.home-step-2-instructions-1">Sit quietly for 5 minutes first - avoid caffeine, smoking, or exercise for 30 minutes beforehand.</li>
+                            <li data-i18n="home.home-step-2-instructions-1">Before measuring your blood pressure, sit quietly for 5 minutes. Avoid caffeine, smoking, and exercise for at least 30 minutes beforehand.</li>
                             <li data-i18n="home.home-step-2-instructions-2">Sit with your back supported and both feet flat on the floor.</li>
-                            <li data-i18n="home.home-step-2-instructions-3">Rest your arm on a table so the cuff sits level with your heart.</li>
-                            <li data-i18n="home.home-step-2-instructions-4">Wrap the cuff snugly on a bare arm, not over clothing.</li>
-                            <li data-i18n="home.home-step-2-instructions-5">Stay still and avoid talking while the reading is taken.</li>
+                            <li data-i18n="home.home-step-2-instructions-3">Rest your arm on a table, this will keep the cuff at heart level.</li>
+                            <li data-i18n="home.home-step-2-instructions-4">The cuff should fit securely against your skin without being too tight or too loose.</li>
+                            <li data-i18n="home.home-step-2-instructions-5">Stay still and don't talk while your blood pressure is being measured.</li>
                         </ul>
 
                         <!-- Continue button - takes user to home panel (Yes branch) -->
@@ -108,14 +108,14 @@
                     <div class = "step-block" id="Screening-Locations/Resources" hidden>
                         <button type="button" class="quicklink" data-goto="findcare">
                             <span class="quicklink-content">
-                                <h3 data-i18n="home.home-step-2-find-care">Find screening locations near you</h3>
-                                <p data-i18n="home.home-step-2-find-care-description">Locations listed as offering BP screening; call ahead to confirm access and fees</p>
+                                <h3 data-i18n="home.home-step-2-find-care">Find free access to a blood pressure monitor near you</h3>
+                                <p data-i18n="home.home-step-2-find-care-description">Locations offering blood pressure screenings; please call ahead to confirm access</p>
                             </span>
                         </button>
                         <button type="button" class="quicklink" data-goto="learn">
                             <span class="quicklink-content">
                                 <h3 data-i18n="home.home-step-2-learn">Learn about blood pressure</h3>
-                                <p data-i18n="home.home-step-2-learn-description">Plain-language information about what your results mean</p>
+                                <p data-i18n="home.home-step-2-learn-description">Understand what your blood pressure results mean, in plain language</p>
                             </span>
                         </button>
                     </div>
@@ -125,8 +125,13 @@
                     <!-- BP range options -->
                     <div class="step-block">
                         <h2 class="step-label" data-i18n="home.home-step-2-select-bp-range">Select your blood pressure range</h2>
-                        <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">Shown as systolic / diastolic (mmHg). Adult ranges, not for pregnancy. Choose the higher category if your upper and lower readings differ. 
-                            If a reading is above 180 systolic or 120 diastolic, repeat after a minute. If it stays that high, contact your clinician immediately or call 911.</p>
+                        <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">Blood pressure is recorded as systolic (top number) over diastolic (bottom number), 
+                            pressure is measured in mmHg. These categories apply to adults who are not pregnant. </p>
+                        <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">
+                            If your systolic and diastolic readings fall into two different categories, use the higher category. If your systolic blood pressure is 180 or higher 
+                            or your diastolic blood pressure is 120 or higher, wait one minute and check it again. If either number remains that high, contact a 
+                            healthcare professional immediately. Call 911 if you experience symptoms such as chest pain, shortness of breath, severe headache, or vision changes. 
+                        </p>
                         <button type="button" class="bp-range-btn" id="bp-range-normal" data-bprange="normal" aria-pressed="false">
                             <span>
                                 Systolic: Less than 120 / Diastolic: Less than 80
@@ -168,19 +173,19 @@
                     <div class="step-block" id="NextSteps" hidden>
                         <h2 data-i18n="home.home-step-2-nextsteps">Next steps</h2>
                         <p class="help-text" data-i18n="home.home-step-2-nextsteps-description">
-                            Based on your blood pressure range and how long since your 
-                            last screening, here are some next steps you can take.
+                            Based on your blood pressure range and when you last had a screening, 
+                            here are some suggested next steps. 
                         </p>
                         <button type="button" class="quicklink" data-goto="findcare">
                             <span class="quicklink-content">
-                                <h3 data-i18n="home.home-step-2-nextsteps-findcare">Find screening locations near you</h3>
-                                <p data-i18n="home.home-step-2-nextsteps-findcare-description">Locations listed as offering BP screening; call ahead to confirm access and fees</p>
+                                <h3 data-i18n="home.home-step-2-nextsteps-findcare">Find locations with blood pressure monitor access near you</h3>
+                                <p data-i18n="home.home-step-2-nextsteps-findcare-description">Locations listed as offering blood pressure screening; call ahead to confirm availability.</p>
                             </span>
                         </button>
                         <button type="button" class="quicklink" data-goto="learn">
                             <span class="quicklink-content">
                                 <h3 data-i18n="home.home-step-2-nextsteps-learn">Learn about blood pressure</h3>
-                                <p data-i18n="home.home-step-2-nextsteps-learn-description">Plain-language information about what your results mean</p>
+                                <p data-i18n="home.home-step-2-nextsteps-learn-description">Learn what your blood pressure results mean in plain language.</p>
                             </span>
                         </button>
                     </div>
@@ -193,78 +198,75 @@
                 <!-- Content for the Learn tab -->
                 <div class="learn-grid">
                     <h1 id="learn-heading" data-i18n="learn.learn-heading">Learn about blood pressure</h1>
-                    <p class="tab-subheading" data-i18n="learn.learn-subheading">Short, plain-language answers - tap any topic to read more.</p>
+                    <p class="tab-subheading" data-i18n="learn.learn-subheading">Short, easy-to-understand answers. Tap any topic to learn more.</p>
 
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-managebp-title">How to manage Blood Pressure?</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-managebp-title">How to manage Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-managebp-description">
                             You can manage high blood pressure by adopting a heart-healthy diet, cutting back on sodium, and staying physically active.
                             It is also important to maintain a healthy weight, reduce stress, get enough sleep, and avoid alcohol and tobacco. Monitoring your 
                             blood pressure numbers and taking prescribed medications exactly as directed by your doctor are vital steps. 
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure">American Heart Association website.</a>
                         </p>
                     </div>
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-what-is-hbp-title">What is high Blood Pressure?</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-what-is-hbp-title">What is high Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-what-is-hbp-description">
-                            High blood pressure, or hypertension, happens when the force of your blood pushing against your artery walls
-                            is consistently too high. It affects nearly half of American adults and is called a "silent killer" because
-                            it rarely shows physical symptoms.
+                            High blood pressure, also called hypertension, occurs when blood pushes against the walls of your arteries with consistently high force. 
+                            It affects nearly half of U.S. adults and is sometimes called a “silent killer” because it often has no noticeable symptoms. 
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure">American Heart Association website.</a>
                         </p>
                     </div>
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-what-do-numbers-mean-title">What do the numbers mean?</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-what-do-numbers-mean-title">What do the numbers mean?</span>
                         <span data-i18n="learn.learn-card-what-do-numbers-mean-description">
                             Blood pressure is measured using two numbers: Systolic pressure (top number) and Diastolic pressure (bottom number).
                             According to The American Heart Association, these readings can be grouped into five distinct categories: Normal, Elevated, Stage 1
                             Hypertension, Stage 2 Hypertension, and Hypertensive Crisis. 
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings">American Heart Association website.</a>
                         </p>
                     </div>
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-risk-title">Risk of high Blood Pressure</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-risk-title">Risk of high Blood Pressure</span>
                         <span data-i18n="learn.learn-card-risk-description">
-                            There are many factors that can contribute to the risk of being diagnosed with high Blood Pressure. Knowing your risk factors can
-                            help you be more aware of the likelihood of being diagnosed, according to the American Heart Association, the risk factors can be categorized
-                            as either Modifiable (can change) or Non-Modifiable (cannot change). 
+                            There are many factors that can contribute to the risk of developing high blood pressure. 
+                            Knowing your risk factors will help you be more aware and stay healthier.  
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure">American Heart Association website.</a>
                         </p>
                     </div>
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-symptoms-title">What are the Signs and Symptoms of high Blood Pressure?</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-symptoms-title">What are the Signs and Symptoms of high Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-symptoms-description">
-                            High Blood Pressure is often called the "silent killer" because for most people, it has no signs or symptoms. It affects all age groups from children
-                            to elders and can secretly damage your body over the course of years without making you physically sick.
+                            High blood pressure is often called the “silent killer” because it usually has no noticeable symptoms. 
+                            It can affect people of all ages and may damage the heart, blood vessels, kidneys, and other organs over time if left untreated. 
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure/what-are-the-symptoms-of-high-blood-pressure">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure/what-are-the-symptoms-of-high-blood-pressure">American Heart Association website.</a>
                         </p>
                     </div>
                     <div class="summary-card" type="card">
-                        <span data-i18n="learn.learn-card-health-threats-title">Health Threats from High Blood Pressure</span>
+                        <span class="learn-card-title" data-i18n="learn.learn-card-health-threats-title">Health Threats from High Blood Pressure</span>
                         <span data-i18n="learn.learn-card-health-threats-description">
-                            Uncontrolled high Blood Pressure progressively damages the body by narrowing, stiffening, or rupturing blood vessels, which restricts vital blood
-                            and oxygen flow to vital organs. This sustained vascular strain can lead to severe medical complications across multiple organ systems, including heart
-                            attack, stroke, heart failure, vision loss, and cognitive decline. If you have high blood pressure or are predisposed to high blood pressure, it is important
-                            to make changes to reduce the risk of major health problems and complications.
+                            Uncontrolled high blood pressure can damage blood vessels and reduce blood flow to important organs over time. 
+                            This can increase the risk of serious health problems, including heart attack, stroke, heart failure, vision loss, and problems with memory and thinking. 
+                            If you have high blood pressure or are at risk of developing it, taking steps to manage your blood pressure can help protect your health. 
                         </span>
                         <p>
-                            <span data-i18n="learn.AHA-link">For more details visit</span>
-                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/health-threats-from-high-blood-pressure">American Heart Association</a>
+                            <span data-i18n="learn.AHA-link">For more information, visit the</span>
+                            <a href="https://www.heart.org/en/health-topics/high-blood-pressure/health-threats-from-high-blood-pressure">American Heart Association website.</a>
                         </p>
                     </div>
                 </div>
@@ -274,7 +276,7 @@
             <!-- Find Screening Locations Tab -->
             <section class="tab-panel" id="tab-findcare" hidden aria-labelledby="findcare-heading">
                 <!-- Find Screening Locations uses /api/facilities.php and /api/location-types.php. -->
-                <h1 id="findcare-heading" data-i18n="findcare.heading">Find screening locations near you</h1>
+                <h1 id="findcare-heading" data-i18n="findcare.heading">Find locations offering blood pressure monitors access near you</h1>
                 <p class="tab-subheading" data-i18n="findcare.subheading">
                     Search by ZIP code or browse listed screening locations. Each location has a map-search link; contact the site to confirm screening access.
                 </p>
@@ -301,11 +303,12 @@
                         <option value="" data-i18n="findcare.type-all">All types</option>
                     </select>
                     <label for="care-name-filter" data-i18n="findcare.name-label">Name or city</label>
+                    <!-- Should be drop down -->
                     <input id="care-name-filter" type="search" maxlength="100" placeholder="Optional keyword">
                 </div>
 
                 <div class="referral-callout">
-                    <h3 data-i18n="findcare.referral-heading">In a high range?</h3>
+                    <h3 data-i18n="findcare.referral-heading">Is your blood pressure high?</h3>
                     <p data-i18n="findcare.referral-text">Talk with a healthcare professional about persistently elevated readings. These listings are primarily screening locations, not a directory of urgent-care services. For a medical emergency, call 911.</p>
                 </div>
 
@@ -319,7 +322,10 @@
                     </div>
                 </div>
 
-                <p class="help-text" data-i18n="findcare.help-text">These are sponsor-listed BP-monitor locations. A listing does not establish walk-in access, current availability, hours, or cost. Call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.</p>
+                <p class="help-text" data-i18n="findcare.help-text">
+                    These are blood pressure monitor locations. A listing does not guarantee current walk-in access, 
+                    current availability, or hours - please call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.
+                </p>
 
                 <div class="care-list" id="care-list" aria-live="polite"></div>
                 <div class="care-pagination" id="care-pagination" hidden>
@@ -335,23 +341,23 @@
                 <!-- Content for the About tab -->
                 <h1 id="about-heading" data-i18n="about.heading">About CareBP</h1>
                 <p class="tab-subheading" data-i18n="about.subheading">
-                    A community tool to help people understand their blood pressure and 
-                    find real places to get checked and cared for.
+                    A community tool to help people understand their blood pressure and find places to get blood pressure checked. 
                 </p>
 
                 <div class="about-block">
                     <h2 data-i18n="about.education-heading">Education and navigation, not diagnosis</h2>
                     <p data-i18n="about.education-text">
-                        CareBP gives general, plain-language information based on the range you select. 
+                        CareBP gives general, easy to understand information based on the blood pressure range you select. 
                         It doesn't diagnose any condition or replace a conversation with a healthcare provider. 
-                        If you're having a medical emergency, call 911.
+                        If you're having a medical emergency, call 911. 
                     </p>
                 </div>
                 <div class="about-block">
                     <h2 data-i18n="about.privacy-heading">Your Privacy</h2>
                     <p data-i18n="about.privacy-text">
                         CareBP doesn't ask for your name, exact blood pressure numbers, or any personal health information.
-                        Your exact BP numbers are not requested or stored. Your selected BP category ID is sent to the API to retrieve guidance. ZIP codes and optional search terms are also sent to the search API. These requests may appear in standard server logs.
+                        Your exact blood pressure numbers are not requested or stored. Your selected blood pressure category ID is sent to the API to retrieve guidance. 
+                        ZIP codes and optional search terms are also sent to the search API. These requests may appear in standard server logs.
                     </p>
                 </div>
                 <div class="about-block">
