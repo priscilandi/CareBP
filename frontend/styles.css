@@ -152,7 +152,6 @@ h3 { font-size: 1.08rem; }
 .rec-panel a { display: block; width: fit-content; margin-top: 10px; }
 .rec-panel--crisis { border-left-color: var(--brick); background: var(--brick-tint); }
 
-
 .learn-grid .summary-card {
     width: 100%; text-align: left; display: block; background: #fff;
     color: var(--ink); border: 1px solid var(--border); border-radius: 16px;
@@ -161,6 +160,14 @@ h3 { font-size: 1.08rem; }
 }
 
 .learn-grid .summary-card span { display: block; font-weight: 400; color: var(--muted); margin-top: 8px; font-size: .95rem; }
+
+.learn-grid .summary-card .learn-card-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin-top: 0;
+}
+
 .back-btn { margin-bottom: 20px; }
 .topic-body p:first-child { margin-top: 0; }
 .topic-body p { line-height: 1.74; }

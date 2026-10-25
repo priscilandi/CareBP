@@ -1,10 +1,10 @@
 // English dictionary. Keys match the data-i18n* attributes in index.html.
 // The English text in index.html should match this file; change both together.
 window.TRANSLATIONS = window.TRANSLATIONS || {};
-window.TRANSLATIONS.en = {
+window.TRANSLATIONS.es = {
   "head.title": "CareBP: Community Access, Resources, and Education for Blood Pressure",
   "skip-link": "Skip to main content",
-  "header.brand": "CareBP",
+  "header.brand": "CareBP-Spanish",
   "header.location-chip": "Blood pressure monitor near you",
   "disclaimer.strong": "For educational purposes only.",
   "disclaimer.text": "CareBP doesn't diagnose or treat medical conditions. Always consult a healthcare professional for medical advice.",
