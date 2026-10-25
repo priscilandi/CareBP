@@ -286,6 +286,11 @@
                     <input type="text" id="zip-input" name="zip" placeholder="Enter ZIP code, e.g. 30901"
                         inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5">
                     <!-- Search radius dropdown -->
+                </form>
+
+                <!-- Written by Pricilla -->
+                <form class="care-search" id="care-searchdistance-form" novalidate>
+                    <!-- Search radius dropdown -->
                     <label for="care-radius">Search within:</label>
                     <select id="care-radius" name="radius">
                         <option value="5">5 miles</option>
@@ -297,6 +302,8 @@
                      </select>
                     <button class="care-submit" type="submit" data-i18n="findcare.search-button">Search</button>
                 </form>
+                <!-- End -->
+
                 <div class="care-filters">
                     <label for="care-type-filter" data-i18n="findcare.type-label">Location type</label>
                     <select id="care-type-filter">
