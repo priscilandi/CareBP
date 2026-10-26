@@ -203,7 +203,7 @@ const pagination = $('care-pagination');
 let currentPage = 1;
 let requestVersion = 0;
 let careMap = null;
-let cares = null;
+let careMarkers = null;
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -260,7 +260,7 @@ function renderMap(rows) {
     if (careMap) {
         careMap.remove();
         careMap = null;
-        cares = null;
+        careMarkers = null;
     }
     mapContainer.replaceChildren();
 

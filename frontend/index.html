@@ -126,12 +126,10 @@
                     <div class="step-block">
                         <h2 class="step-label" data-i18n="home.home-step-2-select-bp-range">Select your blood pressure range</h2>
                         <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">Blood pressure is recorded as systolic (top number) over diastolic (bottom number), 
-                            pressure is measured in mmHg. These categories apply to adults who are not pregnant. </p>
-                        <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description">
-                            If your systolic and diastolic readings fall into two different categories, use the higher category. If your systolic blood pressure is 180 or higher 
-                            or your diastolic blood pressure is 120 or higher, wait one minute and check it again. If either number remains that high, contact a 
-                            healthcare professional immediately. Call 911 if you experience symptoms such as chest pain, shortness of breath, severe headache, or vision changes. 
-                        </p>
+                            pressure is measured in mmHg. These categories apply to adults who are not pregnant. If your systolic and diastolic readings fall into two different categories, use the higher category.</p>
+                        <p class="help-text" data-i18n="home.home-step-2-select-bp-range-description-2">If your systolic blood pressure is 180 or higher or your diastolic blood pressure is 120 or higher, 
+                            wait one minute and check it again. If either number remains that high, contact a healthcare professional immediately. 
+                            Call 911 if you experience symptoms such as chest pain, shortness of breath, severe headache, or vision changes.</p>
                         <button type="button" class="bp-range-btn" id="bp-range-normal" data-bprange="normal" aria-pressed="false">
                             <span>
                                 Systolic: Less than 120 / Diastolic: Less than 80
@@ -301,12 +299,8 @@
                     <label for="zip-input" class="visually-hidden" data-i18n="findcare.zip-label">Zip code:</label>
                     <input type="text" id="zip-input" name="zip" placeholder="Enter ZIP code, e.g. 30901"
                         inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5">
-                    <!-- Search radius dropdown -->
-                </form>
 
-                <!-- Written by Pricilla -->
-                <form class="care-search" id="care-searchdistance-form" novalidate>
-                    <!-- Search radius dropdown -->
+                    <!-- Written by Pricilla -->
                     <label for="care-radius">Search within:</label>
                     <select id="care-radius" name="radius">
                         <option value="5">5 miles</option>
@@ -315,7 +309,8 @@
                         <option value="50">50 miles</option>
                         <option value="100">100 miles</option>
                         <option value="all" selected>Any distance</option>
-                     </select>
+                    </select>
+
                     <button class="care-submit" type="submit" data-i18n="findcare.search-button">Search</button>
                 </form>
                 <!-- End -->
