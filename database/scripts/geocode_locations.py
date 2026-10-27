@@ -63,8 +63,7 @@ def main():
             state,
             zip_code
         FROM healthcare_locations
-        WHERE is_active = 1
-          AND (latitude IS NULL OR longitude IS NULL)
+        WHERE latitude IS NULL OR longitude IS NULL
         ORDER BY location_id
     """)
 

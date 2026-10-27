@@ -29,7 +29,7 @@ INSERT INTO location_types (type_name, description) VALUES
 ('Salon', 'Salon or personal-care location with a BP monitor');
 
 -- HEALTHCARE LOCATIONS
--- All entries are sponsor-completed locations supplied for development.
+
 -- Verified geocoded coordinates are stored here so database rebuilds
 -- reproduce the same location data.
 -- Locations that could not be matched by the Census Geocoder retain
@@ -78,7 +78,48 @@ VALUES
 (7, 'North Augusta Family YMCA', '406 E Martintown Rd Suite 100', 'North Augusta', 'SC', '29841', '803-278-0882', 'Mon-Fri 5 AM-8 PM; Sat 8 AM-2 PM; Sun 1 PM-5 PM', 33.496528185711, -81.959434199275, 1, 'https://thefamilyy.org/branch/north-augusta', 1, NULL),
 (8, 'Burke County Middle School', '356 Southside Drive', 'Waynesboro', 'GA', '30830', '706-554-3532', NULL, 33.083753077314, -81.99252621043, 1, 'https://bcms.burke.k12.ga.us/', 1, NULL),
 (8, 'Augusta Prep', '285 Flowing Wells Rd.', 'Augusta', 'GA', '30907', '706-863-1906', NULL, 33.500998957619, -82.107509031296, 1, 'https://www.augustaprep.org/', 1, NULL),
-(8, 'Bamberg Middle School', '897 North St.', 'Bamberg', 'SC', '29003', NULL, NULL, 33.301574578872, -81.031597782704, 1, NULL, 1, NULL);
+(8, 'Bamberg Middle School', '897 North St.', 'Bamberg', 'SC', '29003', NULL, NULL, 33.301574578872, -81.031597782704, 1, NULL, 1, NULL),
+(5, 'Aiken County Public Library', '314 Chesterfield Street SW', 'Aiken', 'SC', '29801', '803-642-2020', 'Mon/Wed/Fri/Sat 10 AM-6 PM; Tue/Thu 10 AM-8 PM; Sun Closed', 33.564786081963, -81.717052096914, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Bamberg County Public Library', '3156 Railroad Avenue', 'Bamberg', 'SC', '29003', '803-245-3022', 'Mon-Wed/Fri 10 AM-6 PM; Thu 10 AM-7 PM; Sat 10 AM-2 PM; Sun Closed', 33.296761772707, -81.032697031306, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Barnwell County Public Library', '40 Burr Street', 'Barnwell', 'SC', '29812', '803-259-3612', 'Mon-Wed/Fri 10 AM-6 PM; Thu 10 AM-7 PM; Sat 10 AM-2 PM; Sun Closed', 33.243299212949, -81.364008730927, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Edgefield County Public Library', '105 Court House Square', 'Edgefield', 'SC', '29824', '803-637-4025', 'Mon-Wed/Fri 10 AM-6 PM; Thu 10 AM-7 PM; Sat 10 AM-2 PM; Sun Closed', 33.789358433167, -81.929159776557, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'New Ellenton Branch Library', '113 Pine Hill Avenue', 'New Ellenton', 'SC', '29809', '803-652-7845', 'Mon-Thu 12 PM-5 PM; Fri-Sun Closed', 33.420314481169, -81.685220163945, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Nancy Bonnette Branch Library', '204 Park Street NE', 'Wagener', 'SC', '29164', '803-564-5396', 'Mon-Thu 10 AM-1 PM, 2 PM-5 PM; Fri-Sun Closed', 33.650096580997, -81.359106168284, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Nancy Carson Library', '135 Edgefield Road', 'North Augusta', 'SC', '29841', '803-279-5767', 'Mon/Tue/Thu 10 AM-8 PM; Wed/Fri 10 AM-6 PM; Sat 10 AM-2 PM; Sun Closed', 33.523324574564, -81.953125480087, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Denmark Branch Library', '5122 Carolina Highway', 'Denmark', 'SC', '29042', '803-793-4511', 'Mon-Thu 10 AM-1 PM, 2 PM-5 PM; Fri-Sun Closed', 33.320379968189, -81.142937805851, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Williston Branch Library', '5121 Springfield Road', 'Williston', 'SC', '29853', '803-621-6000', 'Mon-Thu 10 AM-1 PM, 2 PM-5 PM; Fri-Sun Closed', 33.40397773273, -81.418448303909, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Blackville Branch Library', '19420 Sol Blatt Avenue', 'Blackville', 'SC', '29817', '803-284-2295', 'Mon/Tue/Thu 10 AM-1 PM, 2 PM-5 PM; Wed/Fri-Sun Closed', 33.357019, -81.270104, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Johnston Branch Library', '407 Calhoun Street', 'Johnston', 'SC', '29832', '803-275-5157', NULL, 33.830729100934, -81.801185594725, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Midland Valley Branch Library', '9 Hillside Road', 'Warrenville', 'SC', '29851', '803-593-7379', 'Mon-Thu 12 PM-5 PM; Fri-Sun Closed', 33.514151873682, -81.848538313661, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Jackson Branch Library', '106 Main Street', 'Jackson', 'SC', '29831', '803-471-3811', 'Mon-Thu 12 PM-5 PM; Fri-Sun Closed', 33.56323414719, -81.808184924055, 1, 'https://www.abbe-lib.org/', 1, NULL),
+(5, 'Allendale County Library', '297 Main Street North', 'Allendale', 'SC', '29810', '803-584-2371', 'Mon-Fri 9 AM-5 PM; Sat 10 AM-2 PM; Sun Closed', 33.0079, -81.3084, 1, 'https://ahjlibrary.org/contact/', 1, NULL),
+(5, 'Estill Public Library', '100 Peeples Avenue', 'Estill', 'SC', '29918', '803-914-2179', 'Tue-Fri 12 PM-6 PM; Mon/Sat/Sun Closed', 32.75415, -81.23672, 1, 'https://ahjlibrary.org/contact/', 1, NULL),
+(5, 'Hampton County Library', '12 Locust Street', 'Hampton', 'SC', '29924', '803-943-7528', 'Mon-Wed/Fri 9 AM-6 PM; Thu 11 AM-7 PM; Sat 10 AM-3 PM; Sun Closed', 32.857185544493, -81.090720634694, 1, 'https://ahjlibrary.org/contact/', 1, NULL),
+(5, 'Hardeeville Public Library', '30 Main Street', 'Hardeeville', 'SC', '29927', '843-784-3426', 'Mon-Wed/Fri 10 AM-5 PM; Thu 12 PM-7 PM; Sat 10 AM-3 PM; Sun Closed', 32.285804936873, -81.079448830305, 1, 'https://ahjlibrary.org/contact/', 1, NULL),
+(5, 'Pratt Memorial Library', '451 East Wilson Street', 'Ridgeland', 'SC', '29936', '843-726-7744', 'Mon/Wed-Fri 10 AM-5 PM; Tue 12 PM-7 PM; Sat 10 AM-3 PM; Sun Closed', 32.48096557336, -80.975858527703, 1, 'https://ahjlibrary.org/contact/', 1, NULL),
+(7, 'Barnwell County Family YMCA', '660 Joey Zorn Blvd', 'Barnwell', 'SC', '29812', '803-450-4151', 'Mon-Thu 5 AM-9 PM; Fri 5 AM-8 PM; Sat 8 AM-1 PM; Sun 1 PM-5 PM', 33.18324470377, -81.285989480778, 1, 'https://thefamilyy.org/branch/barnwell-county/', 1, NULL),
+(7, 'Burke County Family YMCA', '50 Olympic Dr', 'Waynesboro', 'GA', '30830', '706-426-0122', 'Mon-Fri 5 AM-8 PM; Sat 8 AM-12 PM; Sun 1 PM-4 PM', 33.078160347698, -81.991472308886, 1, 'https://thefamilyy.org/branch/burke-county/', 1, NULL),
+(5, 'Columbus Public Library', '3000 Macon Rd', 'Columbus', 'GA', '31906', NULL, 'Mon-Thu 10 AM-8 PM; Fri-Sat 10 AM-6 PM; Sun 1:30 PM-6 PM', 32.477626080547, -84.947315427074, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'Cusseta-Chattahoochee Public Library', '262 Broad Street', 'Cusseta', 'GA', '31805', NULL, 'Mon-Tue/Thu 10 AM-1 PM, 1:30 PM-6 PM; Fri 10 AM-1 PM, 1:30 PM-4 PM; Sat 10 AM-2 PM; Wed/Sun Closed', 32.30812085687, -84.784397530082, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'Marion County Public Library', '123 East 5th Avenue', 'Buena Vista', 'GA', '31803', NULL, 'Mon-Wed/Fri 10 AM-12:30 PM, 1 PM-5:30 PM; Sat 10 AM-2 PM; Thu/Sun Closed', 32.318550130718, -84.521821867858, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'Mildred L. Terry Public Library', '640 Veterans Parkway', 'Columbus', 'GA', '31901', NULL, 'Mon/Wed-Sat 10 AM-6 PM; Tue 10 AM-8 PM; Sun Closed', 32.457932352333, -84.987468003289, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'North Columbus Public Library', '5689 Armour Road', 'Columbus', 'GA', '31909', NULL, 'Mon-Wed/Fri-Sat 10 AM-6 PM; Thu 10 AM-8 PM; Sun Closed', 32.527984744662, -84.953961717378, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'Parks Memorial Public Library', '890 Wall Street', 'Richland', 'GA', '31825', NULL, 'Mon-Wed 10 AM-6 PM; Thu 10 AM-2 PM; Sat 1 PM-5 PM; Fri/Sun Closed', 32.085079918693, -84.667429082132, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'South Columbus Public Library', '2034 South Lumpkin Road', 'Columbus', 'GA', '31903', NULL, 'Mon-Tue/Thu-Sat 10 AM-6 PM; Wed 10 AM-8 PM; Sun Closed', 32.415603473412, -84.95190140393, 1, 'https://www.cvlga.org/about-us/hours-locations', 1, NULL),
+(5, 'Beaufort Library', '311 Scott St', 'Beaufort', 'SC', '29902', NULL, 'Mon-Thu 9 AM-7 PM; Fri-Sat 9 AM-5 PM; Sun Closed', 32.431835169181, -80.670784109567, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(5, 'Bluffton Branch Library', '120 Palmetto Way', 'Bluffton', 'SC', '29910', NULL, 'Mon-Thu 9 AM-7 PM; Fri-Sat 9 AM-5 PM; Sun Closed', 32.242054474389, -80.85697437453, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(5, 'Hilton Head Branch Library', '11 Beach City Rd', 'Hilton Head Island', 'SC', '29926', NULL, 'Mon-Thu 9 AM-7 PM; Fri-Sat 9 AM-5 PM; Sun Closed', 32.219172239645, -80.712357592381, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(5, 'Lobeco Branch Library', '1862 Trask Pkwy', 'Lobeco', 'SC', '29931', NULL, 'Mon-Thu 10 AM-6 PM; Fri-Sat 10 AM-5 PM; Sun Closed', 32.55, -80.69, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(5, 'Port Royal Branch Library', '1408 Paris Ave', 'Port Royal', 'SC', '29935', NULL, 'Mon-Thu 10 AM-7 PM; Fri-Sat 10 AM-5 PM; Sun Closed', 32.379067961221, -80.692577478058, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(5, 'St. Helena Branch Library', '6355 Jonathan Francis Senior Rd', 'St Helena Island', 'SC', '29920', NULL, 'Mon-Thu 10 AM-7 PM; Fri-Sat 10 AM-5 PM; Sun Closed', 32.385797371621, -80.573026615235, 1, 'https://www.beaufortcountylibrary.org/visit/locations', 1, NULL),
+(7, 'Atrium Health Navicent Health Resource Center', '877 Hemlock Street', 'Macon', 'GA', '31201', NULL, 'Free BP screenings Tue/Fri 9 AM-12 PM', 32.833690488788, -83.637237544446, 1, 'https://navicenthealth.org/service-center/health-resource-center-library-at-navicent-health/free-blood-pressure-screenings', 1, NULL),
+(7, 'African-American Health Information & Resource Center', '1910 Abercorn Street', 'Savannah', 'GA', '31401', NULL, 'Mon-Thu 8:30 AM-5 PM (closed 12-1 PM); Fri 8:30 AM-12 PM; Sat-Sun Closed', 32.057629273431, -81.097375871369, 1, 'https://www.sjchs.org/about-us/community-involvement/african-american-information-resource-center', 1, NULL),
+(5, 'Fulton County Central Library', '1 Margaret Mitchell Square NW', 'Atlanta', 'GA', '30303', NULL, 'Mon-Tue 10 AM-8 PM; Wed-Sat 10 AM-6 PM; Sun Closed', 33.758444768406, -84.388511238869, 1, 'https://www.fulcolibrary.org/locations/CENTRAL/', 1, NULL),
+(5, 'Bull Street Library', '2002 Bull Street', 'Savannah', 'GA', '31401', NULL, 'Mon-Tue 10 AM-8 PM; Wed-Sat 10 AM-6 PM; Sun Closed', 32.057943753387, -81.099894546793, 1, 'https://liveoakpl.org/locations/bullstreet', 1, NULL),
+(5, 'Oglethorpe Mall Library', '7 Mall Annex', 'Savannah', 'GA', '31406', NULL, 'Mon-Tue 10 AM-6 PM; Wed-Thu 10 AM-8 PM; Fri-Sat 10 AM-6 PM; Sun Closed', 32.001069288078, -81.106605969261, 1, 'https://liveoakpl.org/locations/oglethorpe', 1, NULL),
+(5, 'Southwest Chatham Library', '14097 Abercorn Street', 'Savannah', 'GA', '31419', NULL, 'Mon-Tue 10 AM-8 PM; Wed-Sat 10 AM-6 PM; Sun Closed', 31.982901936958, -81.177006564665, 1, 'https://liveoakpl.org/locations/southwest', 1, NULL),
+(5, 'Springfield Library', '810 Highway 119 South', 'Springfield', 'GA', '31329', NULL, NULL, 32.3611079, -81.3315473, 1, NULL, 1, NULL),
+(5, 'Hinesville Library', '236 West Memorial Drive', 'Hinesville', 'GA', '31313', NULL, 'Mon-Tue 10 AM-6 PM; Wed-Thu 10 AM-8 PM; Fri-Sat 10 AM-6 PM; Sun Closed', 31.851068290828, -81.599313622327, 1, 'https://liveoakpl.org/locations/hours', 1, NULL);
 
 -- ZIP CODE COORDINATES
 -- Used as the search origin for nearby-location searches.
