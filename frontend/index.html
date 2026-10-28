@@ -301,15 +301,17 @@
                         inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5">
 
                     <!-- Written by Pricilla -->
-                    <label for="care-radius">Search within:</label>
-                    <select id="care-radius" name="radius">
-                        <option value="5">5 miles</option>
-                        <option value="10">10 miles</option>
-                        <option value="25">25 miles</option>
-                        <option value="50">50 miles</option>
-                        <option value="100">100 miles</option>
-                        <option value="all" selected>Any distance</option>
-                    </select>
+                    <div class="care-search-group">
+                        <label for="care-radius">Search within:</label>
+                        <select id="care-radius" name="radius">
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="50">50 miles</option>
+                            <option value="100">100 miles</option>
+                            <option value="all" selected>Any distance</option>
+                        </select>
+                    </div>
 
                     <button class="care-submit" type="submit" data-i18n="findcare.search-button">Search</button>
                 </form>
