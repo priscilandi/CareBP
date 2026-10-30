@@ -59,7 +59,7 @@
         <main id="main-content">
             <!-- Home Tab -->
             <section class="tab-panel" id="tab-home" aria-labelledby="home-heading">
-                <h1 id="home-heading" data-i18n="home.home-heading">UNDERSTAND YOUR BLOOD PRESSURE</h1>
+                <h1 id="home-heading" data-i18n="home.home-heading">Understand your Blood Pressure</h1>
                 <p class="tab-subheading" data-i18n="home.home-subheading">
                     Answer a few quick questions to get guidance and access a free 
                     blood pressure monitor nearby. No account or exact blood pressure reading required. 
@@ -94,6 +94,14 @@
                             <li data-i18n="home.home-step-2-instructions-4">The cuff should fit securely against your skin without being too tight or too loose.</li>
                             <li data-i18n="home.home-step-2-instructions-5">Stay still and don't talk while your blood pressure is being measured.</li>
                         </ul>
+
+                        <figure class="bp-figure">
+                            <img src="images/instruction.png" width="600" height="800" loading="lazy"
+                                alt="Illustration of a man seated upright with his back supported, feet flat, arm resting on a table at heart level with the cuff on bare skin, next to a home blood pressure monitor.">
+                            <figcaption class="help-text">
+                                Source: <a href="https://www.heart.org/BP">American Heart Association, “Home Blood Pressure Measurement Instructions”</a>. © 2025 American Heart Association, Inc. Used with permission.
+                            </figcaption>
+                        </figure>
 
                         <!-- Continue button - takes user to home panel (Yes branch) -->
                         <button type="button" class="quicklink" data-hasreading-ql="yes">
@@ -198,6 +206,15 @@
                     <h1 id="learn-heading" data-i18n="learn.learn-heading">Learn about blood pressure</h1>
                     <p class="tab-subheading" data-i18n="learn.learn-subheading">Short, easy-to-understand answers. Tap any topic to learn more.</p>
 
+                    <nav class="learn-quicklinks" aria-label="Learn topics">
+                        <a href="#learn-manage"  data-i18n="learn.learn-card-managebp-title">How to manage blood pressure?</a>
+                        <a href="#learn-what-is" data-i18n="learn.learn-card-what-is-hbp-title">What is high blood pressure?</a>
+                        <a href="#learn-numbers" data-i18n="learn.learn-card-what-do-numbers-mean-title">What do the blood pressure numbers mean?</a>
+                        <a href="#learn-risk" data-i18n="learn.learn-card-risk-title">Risk of high blood pressure</a>
+                        <a href="#learn-symptoms" data-i18n="learn.learn-card-symptoms-title">What are the signs and symptoms of high blood pressure?</a>
+                        <a href="#learn-threats" data-i18n="learn.learn-card-health-threats-title">Health threats from high blood pressure</a>
+                    </nav>
+
                     <div class="summary-card" type="card">
                         <span class="learn-card-title" data-i18n="learn.learn-card-how-to-measure-bp">How to measure your blood pressure</span>
                         <span data-i18n="BP-Instructions">
@@ -214,7 +231,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings/monitoring-your-blood-pressure-at-home">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" id="learn-manage" type="card">
                         <span class="learn-card-title" data-i18n="learn.learn-card-managebp-title">How to manage Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-managebp-description">
                             You can manage high blood pressure by adopting a heart-healthy diet, cutting back on sodium, and staying physically active.
@@ -226,7 +243,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" type="card" id="learn-what-is">
                         <span class="learn-card-title" data-i18n="learn.learn-card-what-is-hbp-title">What is high Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-what-is-hbp-description">
                             High blood pressure, also called hypertension, occurs when blood pushes against the walls of your arteries with consistently high force. 
@@ -237,7 +254,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" type="card" id="learn-numbers">
                         <span class="learn-card-title" data-i18n="learn.learn-card-what-do-numbers-mean-title">What do the numbers mean?</span>
                         <span data-i18n="learn.learn-card-what-do-numbers-mean-description">
                             Blood pressure is measured using two numbers: Systolic pressure (top number) and Diastolic pressure (bottom number).
@@ -249,7 +266,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" type="card" id="learn-risk">
                         <span class="learn-card-title" data-i18n="learn.learn-card-risk-title">Risk of high Blood Pressure</span>
                         <span data-i18n="learn.learn-card-risk-description">
                             There are many factors that can contribute to the risk of developing high blood pressure. 
@@ -260,7 +277,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" type="card" id="learn-symptoms">
                         <span class="learn-card-title" data-i18n="learn.learn-card-symptoms-title">What are the Signs and Symptoms of high Blood Pressure?</span>
                         <span data-i18n="learn.learn-card-symptoms-description">
                             High blood pressure is often called the “silent killer” because it usually has no noticeable symptoms. 
@@ -271,7 +288,7 @@
                             <a href="https://www.heart.org/en/health-topics/high-blood-pressure/know-your-risk-factors-for-high-blood-pressure/what-are-the-symptoms-of-high-blood-pressure">American Heart Association.</a>
                         </p>
                     </div>
-                    <div class="summary-card" type="card">
+                    <div class="summary-card" type="card" id="learn-threats">
                         <span class="learn-card-title" data-i18n="learn.learn-card-health-threats-title">Health Threats from High Blood Pressure</span>
                         <span data-i18n="learn.learn-card-health-threats-description">
                             Uncontrolled high blood pressure can damage blood vessels and reduce blood flow to important organs over time. 
@@ -290,7 +307,7 @@
             <!-- Find Screening Locations Tab -->
             <section class="tab-panel" id="tab-findcare" hidden aria-labelledby="findcare-heading">
                 <!-- Find Screening Locations uses /api/facilities.php and /api/location-types.php. -->
-                <h1 id="findcare-heading" data-i18n="findcare.heading">Find locations offering blood pressure monitors access near you</h1>
+                <h1 id="findcare-heading" data-i18n="findcare.heading">Blood Pressure monitoring near you</h1>
                 <p class="tab-subheading" data-i18n="findcare.subheading">
                     Search by ZIP code or browse listed screening locations. Each location has a map-search link; contact the site to confirm screening access.
                 </p>

@@ -147,8 +147,8 @@ async function populateRecommendationPanel() {
 
     if(selectedRange === 'hypertensiveCrisis') {
         putLink(recPanel, 'Call 911', 'tel:911');
-        recPanel.scrollIntoView({behavior: 'auto', block: 'start'});
     }
+    recPanel.scrollIntoView({behavior: 'auto', block: 'start'});
     
     putLink(recPanel, 'Learn about the American Heart Association blood pressure categories', ahaReadings);
     putText(recPanel, 'p', 'This information is for educational purposes only and is not a diagnosis. Blood pressure thresholds during pregnancy are different.', 'help-text');
@@ -204,6 +204,13 @@ let currentPage = 1;
 let requestVersion = 0;
 let careMap = null;
 let careMarkers = null;
+// Marker color for each location type; the map pins and the card pills both use it
+const TYPE_COLORS = {
+    'Church': 'orange',
+    'Community Location': 'green',
+    'Library': 'purple',
+    'School': 'blue',
+};
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -228,8 +235,11 @@ function safeWebsite(value) {
 function renderCard(location) {
     const card = document.createElement('article');
     card.className = 'care-card';
-    putText(card, 'p', location.type_name, 'care-type');
-    putText(card, 'h3', location.name);
+    
+    // New marker color system for the cards and the map pins. The color is based on the location type, and if there is no match then it will use a default gray color
+    const typeColor = TYPE_COLORS[location.type_name];
+    putText(card, 'p', location.type_name, typeColor ? `care-type care-type--${typeColor}` : 'care-type');    putText(card, 'h3', location.name);
+
     const address = [location.address, location.city, location.state, location.zip_code].filter(Boolean).join(', ');
     putText(card, 'p', address, 'care-address');
 
