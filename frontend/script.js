@@ -385,9 +385,18 @@ async function loadTypes() {
 // Runs all of the actual Find Care requests
 async function loadLocations(page = 1) {
     const zip = zipInput.value.trim();
+
+    //By Priscilla 
+    // A ZIP code is required to calculate distances from a starting location.
+    if (!zip) {
+        showSearchError('Please enter a ZIP code to find nearby locations.');
+        zipInput.focus();
+        return;
+    }
+
     // Validates the ZIP is 5-digits and contains no characters
     if (zip && !/^\d{5}$/.test(zip)) {
-        showSearchError('Enter a valid five-digit ZIP code, or leave it blank to browse all locations.');
+        showSearchError('Enter a valid five-digit ZIP code.');
         zipInput.focus();
         return;
     }
@@ -450,5 +459,10 @@ $('care-next').addEventListener('click', () => { void loadLocations(currentPage 
 
 // These two calls below run immediately when the script loads to insure that users are seeing real data as soon as they
 // click to the Find Care tab
+
+// By Priscilla:
+// Display instructions instead of a loading message until the user enters a ZIP code.
+searchStatus.textContent = 'Enter a ZIP code and click Search to find nearby screening locations.';
+
 void loadTypes();
-void loadLocations(1);
+// void loadLocations(1);

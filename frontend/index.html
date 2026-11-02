@@ -309,7 +309,7 @@
                 <!-- Find Screening Locations uses /api/facilities.php and /api/location-types.php. -->
                 <h1 id="findcare-heading" data-i18n="findcare.heading">Blood Pressure monitoring near you</h1>
                 <p class="tab-subheading" data-i18n="findcare.subheading">
-                    Search by ZIP code or browse listed screening locations. Each location has a map-search link; contact the site to confirm screening access.
+                    Enter your ZIP code to find nearby screening locations within 15 miles by default. You can adjust the search distance up to 100 miles. Contact each location to confirm screening access.
                 </p>
 
                 <form class="care-search" id="care-search-form" novalidate>
@@ -323,10 +323,10 @@
                         <select id="care-radius" name="radius">
                             <option value="5">5 miles</option>
                             <option value="10">10 miles</option>
+                            <option value="15" selected>15 miles</option>
                             <option value="25">25 miles</option>
                             <option value="50">50 miles</option>
                             <option value="100">100 miles</option>
-                            <option value="all" selected>Any distance</option>
                         </select>
                     </div>
 
@@ -350,7 +350,7 @@
                 </div>
 
                 <p class="care-search-error" id="care-search-error" role="alert" hidden></p>
-                <p id="care-search-status" class="help-text" role="status" aria-live="polite" data-i18n="findcare.loading">Loading screening locations…</p>
+                <p id="care-search-status" class="help-text" role="status" aria-live="polite" data-i18n="findcare.loading">Enter a ZIP code and click Search to find nearby screening locations.</p>
 
                 <div id="map-container" role="region" aria-label="Location map">
                     <p data-i18n="findcare.map-text">Maps are available for locations with coordinates; every listing includes a map-search link.</p>
