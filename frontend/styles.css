@@ -250,6 +250,14 @@ h3 { font-size: 1.08rem; }
     border-radius: 12px;
 }
 
+/* -------------------- Map pins -------------------- */
+.type-pin { color: #2A81CB; }                 /* default if a type has no color */
+.type-pin.orange { color: #D75C3B; }
+.type-pin.green  { color: #11973A; }
+.type-pin.purple { color: #7368E6; }
+.type-pin.blue   { color: #2A81CB; }
+.type-pin svg { display: block; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 35%)); }
+
 /* -------------------- Navigation -------------------- */
 .tab-bar {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;

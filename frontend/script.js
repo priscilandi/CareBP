@@ -6,7 +6,45 @@ const $ = (id) => document.getElementById(id);
 const tabButtons = [...document.querySelectorAll('.tab-btn')];
 const panels = Object.fromEntries(['home', 'learn', 'findcare', 'about'].map(name => [name, $(`tab-${name}`)]));
 
+// -------- Shared helpers --------
+// Validates all json content that is recieved from backend
+async function requestJson(path) {
+    const response = await fetch(path, {headers: {Accept: 'application/json'}, credentials: 'same-origin'});
+    let payload;
+    // wait for the json to be decoded
+    try { payload = await response.json(); }
+    // if the json fails to decode then display an error message to the user
+    catch { throw new Error('The server did not return valid JSON.'); }
+    // Check the HTTP status and if its not ok throw an error to prevent a crash
+    if (!response.ok) throw new Error(payload?.error?.message || `Request failed (${response.status}).`);
+    return payload;
+}
 
+// helper function that sets the pressed attribute for the one that was pressed and removes it from all other buttons if any have it set to true
+function setPressed(buttons, selected) {
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button === selected)));
+}
+
+// Below are to DOM-building helper functions used throughout the script.js file.
+// building elements with .createElement() is much safer and prevents injections of tags or broken markup from special characters
+function putText(container, tag, content, className = '') {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    element.textContent = content;
+    container.append(element);
+    return element;
+}
+function putLink(container, label, href) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    container.append(link);
+    return link;
+}
+
+// -------- Tabs --------
 // Function that takes the name of each tab and switches views based on what the user selects
 function goToTab(name) {
     // Check just in case a call is made on a tab that doesn't exist
@@ -29,7 +67,6 @@ function goToTab(name) {
     }
 }
 
-
 tabButtons.forEach(button => button.addEventListener('click', () => goToTab(button.dataset.tab)));
 
 // Listener for the whole page that will look out for anything with a goto tag given to it
@@ -40,24 +77,6 @@ document.addEventListener('click', event => {
         goToTab(link.dataset.goto);
     }
 });
-
-// Validates all json content that is recieved from backend
-async function requestJson(path) {
-    const response = await fetch(path, {headers: {Accept: 'application/json'}, credentials: 'same-origin'});
-    let payload;
-    // wait for the json to be decoded
-    try { payload = await response.json(); }
-    // if the json fails to decode then display an error message to the user
-    catch { throw new Error('The server did not return valid JSON.'); }
-    // Check the HTTP status and if its not ok throw an error to prevent a crash
-    if (!response.ok) throw new Error(payload?.error?.message || `Request failed (${response.status}).`);
-    return payload;
-}
-
-// helper function that sets the pressed attribute for the one that was pressed and removes it from all other buttons if any have it set to true
-function setPressed(buttons, selected) {
-    buttons.forEach(button => button.setAttribute('aria-pressed', String(button === selected)));
-}
 
 // -------- Home: yes/no -> screening -> range -> timing flow ------------------------------------------------
 const readingButtons = [...document.querySelectorAll('[data-hasreading]')];
@@ -111,25 +130,6 @@ function currentCategoryId() {
     const namePart = {normal: 'normal', elevated: 'elevated', high: 'stage 1', veryhigh: 'stage 2', hypertensiveCrisis: 'hypertensive crisis'}[selectedRange];
     const item = bpCategories?.find(row => row.category_name.toLowerCase().includes(namePart));
     return item?.category_id;
-}
-
-// Below are to DOM-building helper functions used throughout the script.js file.
-// building elements with .createElement() is much safer and prevents injections of tags or broken markup from special characters
-function putText(container, tag, content, className = '') {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    element.textContent = content;
-    container.append(element);
-    return element;
-}
-function putLink(container, label, href) {
-    const link = document.createElement('a');
-    link.href = href;
-    link.textContent = label;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    container.append(link);
-    return link;
 }
 
 // Only runs once the user has picked a range. Once they do it immediatly shows them static hardcoded text while it fetches the extra content
@@ -204,6 +204,7 @@ let currentPage = 1;
 let requestVersion = 0;
 let careMap = null;
 let careMarkers = null;
+
 // Marker color for each location type; the map pins and the card pills both use it
 const TYPE_COLORS = {
     'Church': 'orange',
@@ -211,6 +212,26 @@ const TYPE_COLORS = {
     'Library': 'purple',
     'School': 'blue',
 };
+
+// Marker icon for each location type; the map pins and the card pills both use it
+const TYPE_ICONS = {
+    'Church': '<path d="M9 0h2v3h2.5v2H11v2.2L17 11v8H3v-8l6-3.8V5H6.5V3H9z"/><rect x="8.5" y="14" width="3" height="5" fill="currentColor"/>',
+    'Community Location': '<path d="M10 1 1 9h2v10h14V9h2z"/><rect x="8" y="12" width="4" height="7" fill="currentColor"/>',
+    'Library': '<path d="M1 4q4.5-2 9 0 4.5-2 9 0v13q-4.5-2-9 0-4.5-2-9 0z"/><path d="M10 4v13" stroke="currentColor" stroke-width="1.5"/>',
+    'School': '<path d="M10 3l9 5-9 5-9-5z"/><path d="M4 11v4q6 4 12 0v-4l-6 3z"/><path d="M18 8v6" stroke="#fff" stroke-width="1.5"/>',
+};
+
+function typeIcon(typeName) {
+    return L.divIcon({
+        className: 'type-pin',
+        html: '<svg viewBox="0 0 34 44" width="34" height="44" aria-hidden="true">' +
+              '<path d="M17 43S32 27 32 16A15 15 0 0 0 2 16C2 27 17 43 17 43z" fill="currentColor" stroke="#fff" stroke-width="2"/>' +
+              '<g transform="translate(7 6)" fill="#fff">' + (TYPE_ICONS[typeName] || '') + '</g></svg>',
+        iconSize: [34, 44],
+        iconAnchor: [17, 44],
+        popupAnchor: [0, -40],
+    })
+}
 
 // Helper function to show the error message on a failed search
 function showSearchError(message = '') {
@@ -262,6 +283,17 @@ function renderCard(location) {
     return card;
 }
 
+// Temporary: manually-looked-up coordinates until the backend stores them.
+const MANUAL_COORDINATES = {
+    12: { latitude: 33.4735, longitude: -82.0105 }, // match by facility id
+    13: { latitude: 33.4701, longitude: -81.9622 },
+    // ...
+};
+
+function applyManualCoordinates(rows) {
+    return rows.map(row => ({ ...row, ...MANUAL_COORDINATES[row.id] }));
+}
+
 // Show the embedded OpenStreetMap iframe if there is at least one result with valid coordinates
 function renderMap(rows) {
     const mapContainer = $('map-container');
@@ -308,7 +340,7 @@ function renderMap(rows) {
         if (row.address) {
             popup.append(document.createElement('br'), row.address);
         }
-         let marker = L.marker([row.latitude, row.longitude]).bindPopup(popup);
+        let marker = L.marker([row.latitude, row.longitude], {icon: typeIcon(row.type_name), title: row.type_name}).bindPopup(popup);        
         switch(row.type_name)
             {
                 case "Church":
@@ -354,17 +386,6 @@ function renderMap(rows) {
 
     careMarkers = L.featureGroup(markers).addTo(careMap);
     careMap.fitBounds(careMarkers.getBounds().pad(0.15));
-}
-
-// Temporary: manually-looked-up coordinates until the backend stores them.
-const MANUAL_COORDINATES = {
-    12: { latitude: 33.4735, longitude: -82.0105 }, // match by facility id
-    13: { latitude: 33.4701, longitude: -81.9622 },
-    // ...
-};
-
-function applyManualCoordinates(rows) {
-    return rows.map(row => ({ ...row, ...MANUAL_COORDINATES[row.id] }));
 }
 
 // Gets each location types and populates the lsit of locations found in the ZIP code aread
@@ -414,7 +435,7 @@ async function loadLocations(page = 1) {
         params.set('zip', zip);
         params.set('nearby', '1');
         const radius = document.getElementById('care-radius').value;
-        params.set('radius_miles', radius);
+        params.set('radius_miles', radius === 'all' ? '100' : radius);
     }
     if (typeFilter.value) params.set('type_id', typeFilter.value);
     if (nameFilter.value.trim()) params.set('q', nameFilter.value.trim());
@@ -456,6 +477,7 @@ typeFilter.addEventListener('change', () => { void loadLocations(1); });
 nameFilter.addEventListener('change', () => { void loadLocations(1); });
 $('care-prev').addEventListener('click', () => { if (currentPage > 1) void loadLocations(currentPage - 1); });
 $('care-next').addEventListener('click', () => { void loadLocations(currentPage + 1); });
+$('care-radius').addEventListener('change', () => { if (zipInput.value.trim()) void loadLocations(1); });
 
 // These two calls below run immediately when the script loads to insure that users are seeing real data as soon as they
 // click to the Find Care tab
