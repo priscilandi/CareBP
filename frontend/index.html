@@ -354,6 +354,18 @@
                     </div>
                 </div>
  
+                <p class="help-text" data-i18n="findcare.help-text">
+                    These are blood pressure monitor locations. A listing does not guarantee current walk-in access, 
+                    current availability, or hours - please call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.
+                </p>
+ 
+                <div class="care-list" id="care-list" aria-live="polite"></div>
+                <div class="care-pagination" id="care-pagination" hidden>
+                    <button type="button" id="care-prev" data-i18n="findcare.prev-button">Previous</button>
+                    <span id="care-page-label"></span>
+                    <button type="button" id="care-next" data-i18n="findcare.next-button">Next</button>
+                </div>
+
                 <div class="referral-callout">
                     <h3 data-i18n="findcare.referral-heading">Is your blood pressure high?</h3>
                     <p data-i18n="findcare.referral-text">Talk with a healthcare professional about persistently elevated readings. These listings are primarily screening locations, not a directory of urgent-care services. For a medical emergency, call 911.</p>
@@ -370,18 +382,6 @@
                                 <figcaption class="help-text">
                                 <span data-i18n="figure.source-label">Source:</span> <a href="https://www.heart.org/BP" data-i18n="figure.source-title">American Heart Association, “Home Blood Pressure Measurement Instructions”</a><span data-i18n="figure.source-rights">. © 2025 American Heart Association, Inc. Used with permission.</span>                                </figcaption>
                     </figure>
-                </div>
- 
-                <p class="help-text" data-i18n="findcare.help-text">
-                    These are blood pressure monitor locations. A listing does not guarantee current walk-in access, 
-                    current availability, or hours - please call ahead when possible. Facilities without verified coordinates appear in the list with a map-search link.
-                </p>
- 
-                <div class="care-list" id="care-list" aria-live="polite"></div>
-                <div class="care-pagination" id="care-pagination" hidden>
-                    <button type="button" id="care-prev" data-i18n="findcare.prev-button">Previous</button>
-                    <span id="care-page-label"></span>
-                    <button type="button" id="care-next" data-i18n="findcare.next-button">Next</button>
                 </div>
             </section>
  
